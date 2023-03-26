@@ -1,0 +1,23 @@
+version: 2
+mergeable:
+  - when: 'pull_request.*, pull_request_review.*'
+    name: Approvals check
+    filter:
+      # ignore 'Feedback' PR
+      - do: payload
+        pull_request:
+          title:
+            must_exclude:
+              regex: ^Feedback$
+              regex_flag: none
+    validate:
+      - do: approvals
+        min:
+          count: 1
+        block:
+          changes_requested: true
+        limit:
+          users:
+            - aartdem
+            - therain7
+            - ksenmel
