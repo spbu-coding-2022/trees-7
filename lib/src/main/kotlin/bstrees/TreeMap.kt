@@ -1,6 +1,6 @@
 package bstrees
 
-class Map<K : Comparable<K>, V>(treeType: BSTType = BSTType.RedBlack) {
+class TreeMap<K : Comparable<K>, V>(treeType: BSTType = BSTType.RedBlack) {
     enum class BSTType {
         Simple,
         AVL,
