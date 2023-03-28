@@ -28,11 +28,40 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
     }
 
     protected abstract fun createNewNode(data: T): NodeType
+
+    /**
+     * Does simple insert and returns inserted node
+     * Uses 'createNewNode' to create new node to insert
+     */
     protected fun insertNode(data: T): NodeType {
-        // does simple insert and returns inserted node
-        // uses 'createNewNode' to create new node to insert
-        // will be used in different implementations of trees as part of the insert process
-        TODO("Not yet implemented")
+        val createdNode = createNewNode(data)
+
+        if (treeRoot == null) {
+            treeRoot = createdNode
+            return createdNode
+        }
+
+        var tmpNode = treeRoot!!
+        while (true) {
+            val res = data.compareTo(tmpNode.data)
+            if (res < 0) {
+                if (tmpNode.left == null) {
+                    tmpNode.left = createdNode
+                    createdNode.parent = tmpNode
+                    return createdNode
+                }
+                tmpNode = tmpNode.left!!
+
+            } else if (res > 0) {
+                if (tmpNode.right == null) {
+                    tmpNode.right = createdNode
+                    createdNode.parent = tmpNode
+                    return createdNode
+                }
+                tmpNode = tmpNode.right!!
+
+            }
+        }
     }
 
     abstract fun delete(data: T): T?
