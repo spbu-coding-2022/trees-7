@@ -7,12 +7,20 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
     protected var treeRoot: NodeType? = null
 
     fun search(data: T): T? = searchNode(data)?.data
+
+    /**
+     * Searches for node and returns it as a result (or null).
+     */
     protected fun searchNode(data: T): NodeType? {
-        // searches for node and returns it as a result (or null)
-        // aside from public 'search' method
-        // it might be useful for deletion implementations to find the node to delete
-        // that's why we're keeping it visible to inherited classes
-        TODO("Not yet implemented")
+
+        var tmpNode = treeRoot
+        while (tmpNode != null) {
+            val res = data.compareTo(tmpNode.data)
+            if (res < 0) tmpNode = tmpNode.left
+            else if (res > 0) tmpNode = tmpNode.right
+            else return tmpNode
+        }
+        return null
     }
 
     open fun insert(data: T) {
