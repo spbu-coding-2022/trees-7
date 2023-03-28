@@ -7,12 +7,20 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
     protected var treeRoot: NodeType? = null
 
     fun search(data: T): T? = searchNode(data)?.data
+
+    /**
+     * Searches for node and returns it as a result (or null).
+     */
     protected fun searchNode(data: T): NodeType? {
-        // searches for node and returns it as a result (or null)
-        // aside from public 'search' method
-        // it might be useful for deletion implementations to find the node to delete
-        // that's why we're keeping it visible to inherited classes
-        TODO("Not yet implemented")
+
+        var tmpNode = treeRoot
+        while (tmpNode != null) {
+            val res = data.compareTo(tmpNode.data)
+            if (res < 0) tmpNode = tmpNode.left
+            else if (res > 0) tmpNode = tmpNode.right
+            else return tmpNode
+        }
+        return null
     }
 
     open fun insert(data: T) {
@@ -20,11 +28,41 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
     }
 
     protected abstract fun createNewNode(data: T): NodeType
+
+    /**
+     * Does simple insert and returns inserted node
+     * Uses 'createNewNode' to create new node to insert
+     */
     protected fun insertNode(data: T): NodeType {
-        // does simple insert and returns inserted node
-        // uses 'createNewNode' to create new node to insert
-        // will be used in different implementations of trees as part of the insert process
-        TODO("Not yet implemented")
+
+        val createdNode = createNewNode(data)
+
+        if (treeRoot == null) {
+            treeRoot = createdNode
+            return createdNode
+        }
+
+        var tmpNode = treeRoot!!
+        while (true) {
+            val res = data.compareTo(tmpNode.data)
+            if (res < 0) {
+                if (tmpNode.left == null) {
+                    tmpNode.left = createdNode
+                    createdNode.parent = tmpNode
+                    return createdNode
+                }
+                tmpNode = tmpNode.left!!
+
+            } else if (res > 0) {
+                if (tmpNode.right == null) {
+                    tmpNode.right = createdNode
+                    createdNode.parent = tmpNode
+                    return createdNode
+                }
+                tmpNode = tmpNode.right!!
+
+            }
+        }
     }
 
     abstract fun delete(data: T): T?
