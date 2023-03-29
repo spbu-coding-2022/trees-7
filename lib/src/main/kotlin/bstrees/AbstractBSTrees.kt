@@ -35,9 +35,9 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
      * Uses [createNewNode] to create new node to insert
      */
     protected fun insertNode(data: T): NodeType {
-        val createdNode = createNewNode(data)
 
         if (treeRoot == null) {
+            val createdNode = createNewNode(data)
             treeRoot = createdNode
             return createdNode
         }
@@ -47,6 +47,7 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
             val res = data.compareTo(currentNode.data)
             if (res < 0) {
                 if (currentNode.left == null) {
+                    val createdNode = createNewNode(data)
                     currentNode.left = createdNode
                     createdNode.parent = currentNode
                     return createdNode
@@ -54,6 +55,7 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
                 currentNode = currentNode.left!!
             } else if (res > 0) {
                 if (currentNode.right == null) {
+                    val createdNode = createNewNode(data)
                     currentNode.right = createdNode
                     createdNode.parent = currentNode
                     return createdNode
