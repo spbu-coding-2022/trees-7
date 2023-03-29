@@ -12,7 +12,6 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
      * Searches for node and returns it as a result (or null).
      */
     protected fun searchNode(data: T): NodeType? {
-
         var tmpNode = treeRoot
         while (tmpNode != null) {
             val res = data.compareTo(tmpNode.data)
@@ -51,16 +50,16 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
                     return createdNode
                 }
                 tmpNode = tmpNode.left!!
-
-            } else if (res > 0) {
+            }
+            else if (res > 0) {
                 if (tmpNode.right == null) {
                     tmpNode.right = createdNode
                     createdNode.parent = tmpNode
                     return createdNode
                 }
                 tmpNode = tmpNode.right!!
-
             }
+            else return tmpNode
         }
     }
 
