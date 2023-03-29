@@ -12,12 +12,14 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
      * Searches for node and returns it as a result (or null).
      */
     protected fun searchNode(data: T): NodeType? {
-        var tmpNode = treeRoot
-        while (tmpNode != null) {
-            val res = data.compareTo(tmpNode.data)
-            if (res < 0) tmpNode = tmpNode.left
-            else if (res > 0) tmpNode = tmpNode.right
-            else return tmpNode
+        var currentNode = treeRoot
+        while (currentNode != null) {
+            val res = data.compareTo(currentNode.data)
+            currentNode = when {
+                res < 0 -> currentNode.left
+                res > 0 -> currentNode.right
+                else -> return currentNode
+            }
         }
         return null
     }
@@ -30,7 +32,7 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
 
     /**
      * Does simple insert and returns inserted node
-     * Uses 'createNewNode' to create new node to insert
+     * Uses [createNewNode] to create new node to insert
      */
     protected fun insertNode(data: T): NodeType {
         val createdNode = createNewNode(data)
@@ -40,26 +42,26 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
             return createdNode
         }
 
-        var tmpNode = treeRoot!!
+        var currentNode = treeRoot!!
         while (true) {
-            val res = data.compareTo(tmpNode.data)
+            val res = data.compareTo(currentNode.data)
             if (res < 0) {
-                if (tmpNode.left == null) {
-                    tmpNode.left = createdNode
-                    createdNode.parent = tmpNode
+                if (currentNode.left == null) {
+                    currentNode.left = createdNode
+                    createdNode.parent = currentNode
                     return createdNode
                 }
-                tmpNode = tmpNode.left!!
+                currentNode = currentNode.left!!
             }
             else if (res > 0) {
-                if (tmpNode.right == null) {
-                    tmpNode.right = createdNode
-                    createdNode.parent = tmpNode
+                if (currentNode.right == null) {
+                    currentNode.right = createdNode
+                    createdNode.parent = currentNode
                     return createdNode
                 }
-                tmpNode = tmpNode.right!!
+                currentNode = currentNode.right!!
             }
-            else return tmpNode
+            else return currentNode
         }
     }
 
