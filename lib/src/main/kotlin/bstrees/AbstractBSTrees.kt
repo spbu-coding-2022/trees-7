@@ -52,16 +52,17 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
                     return createdNode
                 }
                 currentNode = currentNode.left!!
-            }
-            else if (res > 0) {
+            } else if (res > 0) {
                 if (currentNode.right == null) {
                     currentNode.right = createdNode
                     createdNode.parent = currentNode
                     return createdNode
                 }
                 currentNode = currentNode.right!!
+            } else {
+                currentNode.data = data
+                return currentNode
             }
-            else return currentNode
         }
     }
 
