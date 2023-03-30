@@ -10,4 +10,8 @@ class RBNode<T : Comparable<T>>(override var data: T) : TreeNode<T, RBNode<T>> {
     override var left: RBNode<T>? = null
     override var right: RBNode<T>? = null
     var color = Color.Black
+
+    fun flipColor() {
+        color = if (color == Color.Black) Color.Red else Color.Black
+    }
 }
