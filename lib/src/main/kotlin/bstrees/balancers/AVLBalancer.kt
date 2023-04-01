@@ -64,8 +64,49 @@ class AVLBalancer<T : Comparable<T>> : TreeBalancer<T, AVLNode<T>> {
         node.height = max(getHeight(node.left), getHeight(node.right)) + 1
     }
 
-    override fun balanceAfterInsertion(node: AVLNode<T>): AVLNode<T> {
-        TODO("Not yet implemented")
+    /** Returns balance factor of the [node] in AVL tree */
+    private fun balanceFactor(node: AVLNode<T>) =
+        getHeight(node.left) - getHeight(node.right)
+
+    /**
+     * Balances AVL tree after insertion of new element.
+     * Must be called after every insertion with inserted [node] as parameter.
+     * Returns new root of the tree
+     */
+    override tailrec fun balanceAfterInsertion(node: AVLNode<T>): AVLNode<T> {
+        var currentNode = node
+        when (balanceFactor(currentNode)) {
+            // LL or LR
+            2 -> when (balanceFactor(currentNode.left!!)) {
+                // LL
+                1 -> currentNode = rotateRight(currentNode)
+
+                // LR
+                -1 -> {
+                    rotateLeft(currentNode.left!!)
+                    currentNode = rotateRight(currentNode)
+                }
+            }
+
+            // RR or RL
+            -2 -> when (balanceFactor(currentNode.right!!)) {
+                // RR
+                -1 -> currentNode = rotateLeft(currentNode)
+
+                // RL
+                1 -> {
+                    rotateRight(currentNode.right!!)
+                    currentNode = rotateLeft(currentNode)
+                }
+            }
+
+            else -> updateHeight(currentNode)
+        }
+
+        currentNode.parent?.let {
+            return balanceAfterInsertion(it)
+        }
+        return currentNode
     }
 
     override fun balanceAfterDeletion(node: AVLNode<T>): AVLNode<T> {
