@@ -65,6 +65,7 @@ class SimpleBST<T : Comparable<T>> : BinarySearchTree<T, SimpleNode<T>>() {
         nodeToDelete.data = nodeToReplaceWith.data
         nodeToDelete = nodeToReplaceWith
 
-        deleteLeafNode(nodeToReplaceWith)
+        if (nodeToReplaceWith.left == null && nodeToReplaceWith.right == null) deleteLeafNode(nodeToReplaceWith)
+        else deleteNodeWithOneChild(nodeToReplaceWith)
     }
 }
