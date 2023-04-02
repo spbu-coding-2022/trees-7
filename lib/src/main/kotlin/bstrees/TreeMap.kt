@@ -11,7 +11,7 @@ class TreeMap<K : Comparable<K>, V>(treeType: BSTType = BSTType.RedBlack) {
         override fun compareTo(other: KeyValuePair<K, V>) = key.compareTo(other.key)
     }
 
-    private val tree: BinarySearchTree<KeyValuePair<K, V>, *> = when (treeType) {
+    private val tree: BinarySearchTree<KeyValuePair<K, V>, *, *> = when (treeType) {
         BSTType.Simple -> SimpleBST()
         BSTType.AVL -> AVLTree()
         BSTType.RedBlack -> RBTree()
