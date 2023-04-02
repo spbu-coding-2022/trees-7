@@ -7,8 +7,6 @@ class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
 
     private fun isRed(node: RBNode<T>?) = getColor(node) == RBNode.Color.Red
 
-    private fun isBlack(node: RBNode<T>?) = !isRed(node)
-
     private fun getSibling(node: RBNode<T>): RBNode<T>? {
         val parent = node.parent ?: return null
         return if (parent.left == node) parent.right
@@ -53,15 +51,12 @@ class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
     /** Accepts the inserted node. Returns new tree root */
     override fun balanceAfterInsertion(node: RBNode<T>): RBNode<T> {
         var currentNode = node
-        while (isRed(currentNode)) {
-            val parent = currentNode.parent
-            if (parent == null) {
-                currentNode.flipColor()
-                break
-            }
 
+        while (currentNode.parent != null && isRed(currentNode.parent)) {
+            val parent = currentNode.parent
+            val grandParent = parent!!.parent
             val uncle = getUncle(currentNode)
-            val grandParent = parent.parent
+
             if (isRed(uncle)) {
                 // here parent, uncle and grandParent can not be null
                 parent.flipColor()
@@ -69,14 +64,32 @@ class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
                 grandParent!!.flipColor()
                 currentNode = grandParent
             } else {
-                if (currentNode == parent.right) {
-                    rotateLeft(parent)
+                if (grandParent!!.left == parent) {
+                    if (currentNode == parent.right) rotateLeft(parent)
+                    currentNode = rotateRight(grandParent)
+                    currentNode.right?.flipColor()
                 }
-                currentNode = rotateRight(grandParent!!)
+                else {
+                    if (currentNode == parent.left) rotateRight(parent)
+                    currentNode = rotateLeft(grandParent)
+                    currentNode.left?.flipColor()
+                }
                 currentNode.flipColor()
-                currentNode.right?.flipColor()
+                break
             }
         }
+
+        // fix root color if it was changed
+        if (currentNode.parent == null && isRed(currentNode)) {
+            currentNode.flipColor()
+            return currentNode
+        }
+
+        // go to root
+        while (currentNode.parent != null) {
+            currentNode = currentNode.parent!!
+        }
+
         return currentNode
     }
 
