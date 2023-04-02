@@ -22,8 +22,8 @@ class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
 
     private fun rotateRight(node: RBNode<T>): RBNode<T> {
         val parent = node.parent
-        val wasChild = node.left
-        node.left = wasChild!!.right
+        val wasChild = node.left ?: throw IllegalArgumentException("Incorrect argument for function rotateRight()")
+        node.left = wasChild.right
         wasChild.right = node
         node.left?.parent = node
         node.parent = wasChild
@@ -36,8 +36,8 @@ class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
 
     private fun rotateLeft(node: RBNode<T>): RBNode<T> {
         val parent = node.parent
-        val wasChild = node.right
-        node.right = wasChild!!.left
+        val wasChild = node.right ?: throw IllegalArgumentException("Incorrect argument for function rotateLeft()")
+        node.right = wasChild.left
         wasChild.left = node
         node.right?.parent = node
         node.parent = wasChild
