@@ -65,7 +65,7 @@ class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
             val uncle = getUncle(currentNode)
             val grandParent = getGrandParent(currentNode)
             if (isRed(uncle)) {
-                // there parent, uncle and grandParent are not null
+                // here parent, uncle and grandParent can not be null
                 parent.flipColor()
                 uncle!!.flipColor()
                 grandParent!!.flipColor()
