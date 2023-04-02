@@ -7,12 +7,7 @@ class RBTree<T : Comparable<T>> : SelfBalancingBST<T, RBNode<T>>() {
     override fun createNewNode(data: T) = RBNode(data)
     override val balancer = RBBalancer<T>()
 
-    /**
-     * Insert data in tree.
-     *
-     * @param data the type of data (should be comparable)
-     * @return Nothing
-     */
+    /** Inserts new node with [data] as its value in the tree */
     override fun insert(data: T) {
         // insert like in SimpleBST and paint the new Node red
         val currentNode = super.insertNode(data)

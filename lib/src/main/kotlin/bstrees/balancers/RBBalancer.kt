@@ -52,9 +52,7 @@ class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
         return wasChild
     }
 
-    /**
-     * Returns new tree root (if it was change)
-     */
+    /** Returns new tree root */
     override fun balanceAfterInsertion(node: RBNode<T>) : RBNode<T> {
         var currentNode = node
         while (isRed(currentNode)) {
