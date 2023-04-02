@@ -48,7 +48,6 @@ class SimpleBST<T : Comparable<T>> : BinarySearchTree<T, SimpleNode<T>>() {
 
             nodeToReplaceWith.parent = parent
         }
-
     }
 
     /** Searches for node's successor until the node value is placed on the leaf of the tree. */
