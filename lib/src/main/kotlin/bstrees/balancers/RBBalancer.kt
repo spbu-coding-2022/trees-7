@@ -3,29 +3,25 @@ package bstrees.balancers
 import bstrees.nodes.RBNode
 
 class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
-    private fun color(node: RBNode<T>?) = node?.color ?: RBNode.Color.Black
+    private fun getColor(node: RBNode<T>?) = node?.color ?: RBNode.Color.Black
 
-    private fun isRed(node: RBNode<T>?) = color(node) == RBNode.Color.Red
+    private fun isRed(node: RBNode<T>?) = getColor(node) == RBNode.Color.Red
 
     private fun isBlack(node: RBNode<T>?) = !isRed(node)
 
-    private fun getParent(node: RBNode<T>) = node.parent
-
     private fun getSibling(node: RBNode<T>): RBNode<T>? {
-        val parent = getParent(node) ?: return null
+        val parent = node.parent ?: return null
         return if (parent.left == node) parent.right
         else parent.left
     }
 
     private fun getUncle(node: RBNode<T>): RBNode<T>? {
-        val parent = getParent(node) ?: return null
+        val parent = node.parent ?: return null
         return getSibling(parent)
     }
 
-    private fun getGrandParent(node: RBNode<T>): RBNode<T>? = node.parent?.parent
-
     private fun rotateRight(node: RBNode<T>): RBNode<T> {
-        val parent = getParent(node)
+        val parent = node.parent
         val wasChild = node.left
         node.left = wasChild!!.right
         wasChild.right = node
@@ -39,7 +35,7 @@ class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
     }
 
     private fun rotateLeft(node: RBNode<T>): RBNode<T> {
-        val parent = getParent(node)
+        val parent = node.parent
         val wasChild = node.right
         node.right = wasChild!!.left
         wasChild.left = node
@@ -53,25 +49,24 @@ class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
     }
 
     /** Returns new tree root */
-    override fun balanceAfterInsertion(node: RBNode<T>) : RBNode<T> {
+    override fun balanceAfterInsertion(node: RBNode<T>): RBNode<T> {
         var currentNode = node
         while (isRed(currentNode)) {
-            val parent = getParent(currentNode)
+            val parent = currentNode.parent
             if (parent == null) {
                 currentNode.flipColor()
                 break
             }
 
             val uncle = getUncle(currentNode)
-            val grandParent = getGrandParent(currentNode)
+            val grandParent = parent.parent
             if (isRed(uncle)) {
                 // here parent, uncle and grandParent can not be null
                 parent.flipColor()
                 uncle!!.flipColor()
                 grandParent!!.flipColor()
                 currentNode = grandParent
-            }
-            else {
+            } else {
                 if (currentNode == parent.right) {
                     rotateLeft(parent)
                 }
