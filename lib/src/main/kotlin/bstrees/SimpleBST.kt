@@ -49,18 +49,18 @@ class SimpleBST<T : Comparable<T>> : BinarySearchTree<T, SimpleNode<T>>() {
     }
 
     /** Searches for node's successor until the node value is placed on the leaf of the tree. */
-    private fun findMinimumNode(node: SimpleNode<T>): SimpleNode<T> {
-        var minNode = node
-        while (minNode.right != null) {
-            minNode = minNode.right!!;
+    private fun findNodeToReplaceWith(node: SimpleNode<T>): SimpleNode<T> {
+        var nodeToReplaceWith = node
+        while (nodeToReplaceWith.right != null) {
+            nodeToReplaceWith = nodeToReplaceWith.right!!;
         }
-        return minNode;
+        return nodeToReplaceWith;
     }
 
     /** The node to be deleted has two children. */
     private fun deleteNodeWithTwoChildren(node: SimpleNode<T>) {
         var nodeToDelete = node
-        val nodeToReplaceWith = findMinimumNode(node.left!!)
+        val nodeToReplaceWith = findNodeToReplaceWith(node.left!!)
 
         nodeToDelete.data = nodeToReplaceWith.data
         nodeToDelete = nodeToReplaceWith
