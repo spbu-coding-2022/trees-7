@@ -51,9 +51,9 @@ class SimpleBST<T : Comparable<T>> : BinarySearchTree<T, SimpleNode<T>>() {
     private fun findNodeToReplaceWith(node: SimpleNode<T>): SimpleNode<T> {
         var nodeToReplaceWith = node.left!!
         while (nodeToReplaceWith.right != null) {
-            nodeToReplaceWith = nodeToReplaceWith.right!!;
+            nodeToReplaceWith = nodeToReplaceWith.right!!
         }
-        return nodeToReplaceWith;
+        return nodeToReplaceWith
     }
 
     /** The node to be deleted has two children. */
@@ -62,7 +62,8 @@ class SimpleBST<T : Comparable<T>> : BinarySearchTree<T, SimpleNode<T>>() {
 
         node.data = nodeToReplaceWith.data
 
-        if (nodeToReplaceWith.left == null && nodeToReplaceWith.right == null) deleteLeafNode(nodeToReplaceWith)
+        if (nodeToReplaceWith.left == null && nodeToReplaceWith.right == null)
+            deleteLeafNode(nodeToReplaceWith)
         else deleteNodeWithOneChild(nodeToReplaceWith)
     }
 }
