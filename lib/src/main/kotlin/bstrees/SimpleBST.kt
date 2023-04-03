@@ -1,8 +1,11 @@
 package bstrees
 
 import bstrees.nodes.SimpleNode
+import bstrees.wrapped.WrappedSimpleNode
 
-class SimpleBST<T : Comparable<T>> : BinarySearchTree<T, SimpleNode<T>>() {
+class SimpleBST<T : Comparable<T>> : BinarySearchTree<T, SimpleNode<T>, WrappedSimpleNode<T>>() {
+    override val root get() = treeRoot?.let { WrappedSimpleNode(it) }
+
     override fun createNewNode(data: T) = SimpleNode(data)
 
     /** Deletes node and returns it as a result (or null). */
