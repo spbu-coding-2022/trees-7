@@ -7,21 +7,20 @@ class SimpleBST<T : Comparable<T>> : BinarySearchTree<T, SimpleNode<T>>() {
 
     /** Deletes node and returns it as a result (or null). */
     override fun delete(data: T): T? {
-        val nodeToDelete = searchNodeForDelete(data)
+        val nodeToDelete = searchNode(data) ?: return null
 
-        if (nodeToDelete == null) return null
-        else {
-            when {
-                nodeToDelete.left == null && nodeToDelete.right == null -> deleteLeafNode(nodeToDelete)
-                nodeToDelete.left == null || nodeToDelete.right == null -> deleteNodeWithOneChild(nodeToDelete)
-                else -> deleteNodeWithTwoChildren(nodeToDelete)
-            }
+        when {
+            nodeToDelete.left == null && nodeToDelete.right == null ->
+                deleteLeafNode(nodeToDelete)
+
+            nodeToDelete.left == null || nodeToDelete.right == null ->
+                deleteNodeWithOneChild(nodeToDelete)
+
+            else -> deleteNodeWithTwoChildren(nodeToDelete)
         }
+
         return data
     }
-
-    /** Searches for node to delete. Returns null if node is not found */
-    private fun searchNodeForDelete(data: T): SimpleNode<T>? = searchNode(data)
 
     /** The node to be deleted is a leaf node */
     private fun deleteLeafNode(node: SimpleNode<T>) {
@@ -50,7 +49,7 @@ class SimpleBST<T : Comparable<T>> : BinarySearchTree<T, SimpleNode<T>>() {
 
     /** Searches for node's successor until the node value is placed on the leaf of the tree. */
     private fun findNodeToReplaceWith(node: SimpleNode<T>): SimpleNode<T> {
-        var nodeToReplaceWith = node
+        var nodeToReplaceWith = node.left!!
         while (nodeToReplaceWith.right != null) {
             nodeToReplaceWith = nodeToReplaceWith.right!!;
         }
@@ -59,11 +58,9 @@ class SimpleBST<T : Comparable<T>> : BinarySearchTree<T, SimpleNode<T>>() {
 
     /** The node to be deleted has two children. */
     private fun deleteNodeWithTwoChildren(node: SimpleNode<T>) {
-        var nodeToDelete = node
-        val nodeToReplaceWith = findNodeToReplaceWith(node.left!!)
+        val nodeToReplaceWith = findNodeToReplaceWith(node)
 
-        nodeToDelete.data = nodeToReplaceWith.data
-        nodeToDelete = nodeToReplaceWith
+        node.data = nodeToReplaceWith.data
 
         if (nodeToReplaceWith.left == null && nodeToReplaceWith.right == null) deleteLeafNode(nodeToReplaceWith)
         else deleteNodeWithOneChild(nodeToReplaceWith)
