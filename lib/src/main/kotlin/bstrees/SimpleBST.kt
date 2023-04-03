@@ -19,7 +19,7 @@ class SimpleBST<T : Comparable<T>> : BinarySearchTree<T, SimpleNode<T>>() {
             else -> deleteNodeWithTwoChildren(nodeToDelete)
         }
 
-        return data
+        return nodeToDelete.data
     }
 
     /** The node to be deleted is a leaf node */
