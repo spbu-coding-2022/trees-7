@@ -8,7 +8,7 @@ class SimpleBST<T : Comparable<T>> : BinarySearchTree<T, SimpleNode<T>, WrappedS
 
     override fun createNewNode(data: T) = SimpleNode(data)
 
-    /** Deletes node and returns it as a result (or null). */
+    /** Deletes node and returns its data as a result (or null). */
     override fun delete(data: T): T? {
         val nodeToDelete = searchNode(data) ?: return null
 
