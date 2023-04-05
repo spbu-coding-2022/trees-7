@@ -6,5 +6,4 @@ class WrappedAVLNode<T : Comparable<T>>(private val nodeToWrap: AVLNode<T>) : Wr
     override val data get() = nodeToWrap.data
     override val left get() = nodeToWrap.left?.let { WrappedAVLNode(it) }
     override val right get() = nodeToWrap.right?.let { WrappedAVLNode(it) }
-    val height get() = nodeToWrap.height
 }
