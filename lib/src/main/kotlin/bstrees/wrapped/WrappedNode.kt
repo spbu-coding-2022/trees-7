@@ -1,7 +1,7 @@
 package bstrees.wrapped
 
-interface WrappedNode<T : Comparable<T>, WrappedNodeType : WrappedNode<T, WrappedNodeType>> {
+interface WrappedNode<T : Comparable<T>, WrappedType : WrappedNode<T, WrappedType>> {
     val data: T
-    val left: WrappedNodeType?
-    val right: WrappedNodeType?
+    val left: WrappedType?
+    val right: WrappedType?
 }
