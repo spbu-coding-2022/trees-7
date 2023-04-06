@@ -11,6 +11,7 @@ class SimpleBST<T : Comparable<T>> : BinarySearchTree<T, SimpleNode<T>, WrappedS
     /** Deletes node and returns its data as a result (or null). */
     override fun delete(data: T): T? {
         val nodeToDelete = searchNode(data) ?: return null
+        val deletedData = nodeToDelete.data
 
         when {
             nodeToDelete.left == null && nodeToDelete.right == null ->
@@ -21,8 +22,7 @@ class SimpleBST<T : Comparable<T>> : BinarySearchTree<T, SimpleNode<T>, WrappedS
 
             else -> deleteNodeWithTwoChildren(nodeToDelete)
         }
-
-        return nodeToDelete.data
+        return deletedData
     }
 
     /** The node to be deleted is a leaf node */
