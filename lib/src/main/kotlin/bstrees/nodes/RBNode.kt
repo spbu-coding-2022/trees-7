@@ -1,17 +1,15 @@
 package bstrees.nodes
 
-class RBNode<T : Comparable<T>>(override var data: T) : TreeNode<T, RBNode<T>> {
+class RBNode<T : Comparable<T>>(override var data: T) : TreeNode<T, RBNode<T>>() {
     enum class Color {
         Red,
         Black
     }
 
-    override var parent: RBNode<T>? = null
-    override var left: RBNode<T>? = null
-    override var right: RBNode<T>? = null
     var color = Color.Black
+        internal set
 
-    fun flipColor() {
+    internal fun flipColor() {
         color = if (color == Color.Black) Color.Red else Color.Black
     }
 }

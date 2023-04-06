@@ -2,11 +2,8 @@ package bstrees
 
 import bstrees.nodes.RBNode
 import bstrees.balancers.RBBalancer
-import bstrees.wrapped.WrappedRBNode
 
-class RBTree<T : Comparable<T>> : SelfBalancingBST<T, RBNode<T>, WrappedRBNode<T>>() {
-    override val root get() = treeRoot?.let { WrappedRBNode(it) }
-
+class RBTree<T : Comparable<T>> : SelfBalancingBST<T, RBNode<T>>() {
     override fun createNewNode(data: T) = RBNode(data)
     override val balancer = RBBalancer<T>()
 
@@ -15,7 +12,7 @@ class RBTree<T : Comparable<T>> : SelfBalancingBST<T, RBNode<T>, WrappedRBNode<T
         // insert like in SimpleBST and paint the new Node red
         val currentNode = insertNode(data)
         currentNode.flipColor()
-        treeRoot = balancer.balanceAfterInsertion(currentNode)
+        root = balancer.balanceAfterInsertion(currentNode)
     }
 
     override fun delete(data: T): T? {
