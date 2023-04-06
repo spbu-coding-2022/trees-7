@@ -2,11 +2,8 @@ package bstrees
 
 import bstrees.nodes.RBNode
 import bstrees.balancers.RBBalancer
-import bstrees.wrapped.WrappedRBNode
 
-class RBTree<T : Comparable<T>> : SelfBalancingBST<T, RBNode<T>, WrappedRBNode<T>>() {
-    override val root get() = treeRoot?.let { WrappedRBNode(it) }
-
+class RBTree<T : Comparable<T>> : SelfBalancingBST<T, RBNode<T>>() {
     override fun createNewNode(data: T) = RBNode(data)
     override val balancer = RBBalancer<T>()
 

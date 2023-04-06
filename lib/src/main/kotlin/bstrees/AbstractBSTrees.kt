@@ -2,11 +2,9 @@ package bstrees
 
 import bstrees.nodes.TreeNode
 import bstrees.balancers.TreeBalancer
-import bstrees.wrapped.WrappedNode
 
-abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeType>, WrappedNodeType : WrappedNode<T, WrappedNodeType>> {
+abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeType>> {
     protected var treeRoot: NodeType? = null
-    abstract val root: WrappedNodeType?
 
     fun search(data: T): T? = searchNode(data)?.data
 
@@ -73,7 +71,7 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
     abstract fun delete(data: T): T?
 }
 
-abstract class SelfBalancingBST<T : Comparable<T>, NodeType : TreeNode<T, NodeType>, WrappedNodeType : WrappedNode<T, WrappedNodeType>> :
-    BinarySearchTree<T, NodeType, WrappedNodeType>() {
+abstract class SelfBalancingBST<T : Comparable<T>, NodeType : TreeNode<T, NodeType>> :
+        BinarySearchTree<T, NodeType>() {
     protected abstract val balancer: TreeBalancer<T, NodeType>
 }
