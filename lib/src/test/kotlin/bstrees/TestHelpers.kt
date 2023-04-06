@@ -1,9 +1,8 @@
 package bstrees
 
-import bstrees.wrapped.WrappedNode
+import bstrees.nodes.TreeNode
 
-fun <T : Comparable<T>, WrappedType : WrappedNode<T, WrappedType>>
-        traverseInOrder(root: WrappedType?, output: MutableList<T>) {
+fun <T : Comparable<T>, NodeType : TreeNode<T, NodeType>> traverseInOrder(root: NodeType?, output: MutableList<T>) {
     root?.let {
         traverseInOrder(it.left, output)
         output.add(it.data)
@@ -11,8 +10,7 @@ fun <T : Comparable<T>, WrappedType : WrappedNode<T, WrappedType>>
     }
 }
 
-fun <T : Comparable<T>, WrappedType : WrappedNode<T, WrappedType>>
-        checkBSTInvariant(root: WrappedType?): Boolean {
+fun <T : Comparable<T>, NodeType : TreeNode<T, NodeType>> checkBSTInvariant(root: NodeType?): Boolean {
     root?.let {
         val treeList = mutableListOf<T>().also { traverseInOrder(root, it) }
 
