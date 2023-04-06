@@ -4,7 +4,8 @@ import bstrees.nodes.TreeNode
 import bstrees.balancers.TreeBalancer
 
 abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeType>> {
-    protected var treeRoot: NodeType? = null
+    var treeRoot: NodeType? = null
+        internal set
 
     fun search(data: T): T? = searchNode(data)?.data
 
