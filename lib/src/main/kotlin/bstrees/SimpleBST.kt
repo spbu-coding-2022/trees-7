@@ -29,7 +29,7 @@ class SimpleBST<T : Comparable<T>> : BinarySearchTree<T, SimpleNode<T>>() {
         if (parent != null) {
             if (parent.left == node) parent.left = null
             if (parent.right == node) parent.right = null
-        } else treeRoot = null
+        } else root = null
     }
 
     /** The node to be deleted has only one child. */
@@ -37,8 +37,8 @@ class SimpleBST<T : Comparable<T>> : BinarySearchTree<T, SimpleNode<T>>() {
         val parent = node.parent
 
         if (parent == null) {
-            treeRoot = node.left ?: node.right
-            treeRoot?.parent = null
+            root = node.left ?: node.right
+            root?.parent = null
         } else {
             val nodeToReplaceWith = if (node.left == null) node.right!! else node.left!!
             if (node == parent.right) parent.right = nodeToReplaceWith

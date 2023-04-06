@@ -10,7 +10,7 @@ class AVLTree<T : Comparable<T>> : SelfBalancingBST<T, AVLNode<T>>() {
     /** Inserts new node with [data] as its value in the tree */
     override fun insert(data: T) {
         val insertedNode = insertNode(data)
-        treeRoot = balancer.balanceAfterInsertion(insertedNode)
+        root = balancer.balanceAfterInsertion(insertedNode)
     }
 
     override fun delete(data: T): T? {
