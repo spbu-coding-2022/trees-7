@@ -1,11 +1,8 @@
 package bstrees
 
 import bstrees.nodes.SimpleNode
-import bstrees.wrapped.WrappedSimpleNode
 
-class SimpleBST<T : Comparable<T>> : BinarySearchTree<T, SimpleNode<T>, WrappedSimpleNode<T>>() {
-    override val root get() = treeRoot?.let { WrappedSimpleNode(it) }
-
+class SimpleBST<T : Comparable<T>> : BinarySearchTree<T, SimpleNode<T>>() {
     override fun createNewNode(data: T) = SimpleNode(data)
 
     /** Deletes node and returns its data as a result (or null). */
@@ -32,7 +29,7 @@ class SimpleBST<T : Comparable<T>> : BinarySearchTree<T, SimpleNode<T>, WrappedS
         if (parent != null) {
             if (parent.left == node) parent.left = null
             if (parent.right == node) parent.right = null
-        } else treeRoot = null
+        } else root = null
     }
 
     /** The node to be deleted has only one child. */
@@ -40,8 +37,8 @@ class SimpleBST<T : Comparable<T>> : BinarySearchTree<T, SimpleNode<T>, WrappedS
         val parent = node.parent
 
         if (parent == null) {
-            treeRoot = node.left ?: node.right
-            treeRoot?.parent = null
+            root = node.left ?: node.right
+            root?.parent = null
         } else {
             val nodeToReplaceWith = if (node.left == null) node.right!! else node.left!!
             if (node == parent.right) parent.right = nodeToReplaceWith
