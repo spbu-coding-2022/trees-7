@@ -27,6 +27,14 @@ class SimpleBSTTest {
     }
 
     @Test
+    fun `invariant after insertion of duplicates`() {
+        values.forEach(tree::insert)
+        values.slice(100..700).forEach(tree::insert) // insert some elements again
+
+        assertTrue(checkBSTInvariant(tree.root), "BST invariant is not held")
+    }
+
+    @Test
     fun `tree contains all inserted elements`() {
         values.forEach(tree::insert)
 
