@@ -33,7 +33,7 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
 
     /**
      * Does simple insert and returns inserted node.
-     * Returns null if the node to insert already exists.
+     * Returns null and overwrites the data if a node with that data already exists.
      * Uses [createNewNode] to create new node to insert
      */
     protected fun insertNode(data: T): NodeType? {

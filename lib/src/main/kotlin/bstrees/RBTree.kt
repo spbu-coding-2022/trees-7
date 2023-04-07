@@ -9,7 +9,7 @@ class RBTree<T : Comparable<T>> : SelfBalancingBST<T, RBNode<T>>() {
 
     /** Inserts a new node with [data] as its value in the tree */
     override fun insert(data: T) {
-        // inserts like in SimpleBST and paints the new Node red
+        // insert like in SimpleBST and paint the new Node red
         val currentNode = insertNode(data) ?: return
         currentNode.flipColor()
         root = balancer.balanceAfterInsertion(currentNode)
