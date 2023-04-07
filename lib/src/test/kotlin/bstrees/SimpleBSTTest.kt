@@ -42,7 +42,7 @@ class SimpleBSTTest {
     }
 
     @Test
-    fun `insertion ignores duplicates`() {
+    fun `tree doesnt contain duplicate elements`() {
         values.forEach(tree::insert)
         values.slice(250..720).forEach(tree::insert) // insert some elements again
 
