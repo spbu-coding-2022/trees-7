@@ -32,10 +32,11 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
     protected abstract fun createNewNode(data: T): NodeType
 
     /**
-     * Does simple insert and returns inserted node
+     * Does simple insert and returns inserted node.
+     * Returns null and overwrites the data if a node with that data already exists.
      * Uses [createNewNode] to create new node to insert
      */
-    protected fun insertNode(data: T): NodeType {
+    protected fun insertNode(data: T): NodeType? {
 
         if (root == null) {
             val createdNode = createNewNode(data)
@@ -64,7 +65,7 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
                 currentNode = currentNode.right!!
             } else {
                 currentNode.data = data
-                return currentNode
+                return null
             }
         }
     }
