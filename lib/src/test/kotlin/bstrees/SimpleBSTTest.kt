@@ -21,17 +21,22 @@ class SimpleBSTTest {
 
     @Test
     fun `invariant after insertion`() {
-        values.forEach(tree::insert)
+        values.forEach {
+            tree.insert(it)
 
-        assertTrue(checkBSTInvariant(tree), "BST invariant is not held")
+            assertTrue(checkBSTInvariant(tree), "BST invariant is not held")
+        }
     }
 
     @Test
     fun `invariant after insertion of duplicates`() {
         values.forEach(tree::insert)
-        values.slice(100..700).forEach(tree::insert) // insert some elements again
 
-        assertTrue(checkBSTInvariant(tree), "BST invariant is not held")
+        values.slice(100..700).forEach {
+            tree.insert(it)  // insert element again
+
+            assertTrue(checkBSTInvariant(tree), "BST invariant is not held")
+        }
     }
 
     @Test
@@ -69,9 +74,11 @@ class SimpleBSTTest {
     fun `invariant after deletion`() {
         values.forEach(tree::insert)
 
-        values.slice(200..550).forEach(tree::delete) // delete some elements
+        values.slice(200..550).forEach {
+            tree.delete(it) // delete element
 
-        assertTrue(checkBSTInvariant(tree), "BST invariant is not held")
+            assertTrue(checkBSTInvariant(tree), "BST invariant is not held")
+        }
     }
 
     @Test
