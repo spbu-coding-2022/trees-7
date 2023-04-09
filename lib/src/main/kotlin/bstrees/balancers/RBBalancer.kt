@@ -7,6 +7,8 @@ class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
 
     private fun isRed(node: RBNode<T>?) = getColor(node) == RBNode.Color.Red
 
+    private fun isBlack(node: RBNode<T>?) = !isRed(node)
+
     private fun getSibling(node: RBNode<T>): RBNode<T>? {
         val parent = node.parent ?: return null
         return if (parent.left == node) parent.right
@@ -68,8 +70,7 @@ class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
                     if (currentNode == parent.right) rotateLeft(parent)
                     currentNode = rotateRight(grandParent)
                     currentNode.right?.flipColor()
-                }
-                else {
+                } else {
                     if (currentNode == parent.left) rotateRight(parent)
                     currentNode = rotateLeft(grandParent)
                     currentNode.left?.flipColor()
@@ -93,7 +94,115 @@ class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
         return currentNode
     }
 
+    /** Accepts the node to be deleted. Returns new tree root */
     override fun balanceAfterDeletion(node: RBNode<T>): RBNode<T> {
-        TODO("Not yet implemented")
+        var currentNode = node
+
+        when {
+            isRed(node) -> {
+                val parent = node.parent
+                if (parent?.left == node) parent.left = null
+                else parent?.right = null
+            }
+
+            // node is black and it is the leaf
+            node.left == null && node.right == null -> {
+
+                // update children of the parents of the deleted node
+                if (node.parent != null) {
+                    if (node.parent?.left == node) node.parent?.left = null
+                    else node.parent?.right = null
+                }
+
+                while (currentNode.parent != null && isBlack(currentNode)) {
+                    val parent = currentNode.parent
+                    if (parent?.left == currentNode) {
+                        TODO()
+                    } else {
+                        if (isRed(parent)) {
+                            val leftChild = parent?.left
+                            // here leftChild must be black
+                            if (isRed(leftChild?.left) || isRed(leftChild?.right)) {
+                                //leftChild has at least one red child
+                                parent?.flipColor()
+                                if (isRed(leftChild?.right)) {
+                                    rotateLeft(leftChild!!)
+                                } else {
+                                    leftChild?.flipColor()
+                                    leftChild?.left?.flipColor()
+                                }
+                                rotateRight(parent!!)
+                            } else {
+                                parent?.flipColor()
+                                leftChild?.flipColor()
+                            }
+                            break
+                        } else {
+                            val leftChild = parent?.left
+                            if (isRed(leftChild)) {
+                                // here leftChild and leftChild.right can not be null
+                                val grandChild = leftChild?.right
+                                val redNode = when {
+                                    isRed(grandChild?.left) -> {
+                                        grandChild?.left?.flipColor()
+                                        grandChild?.left
+                                    }
+
+                                    isRed(grandChild?.right) -> grandChild?.right
+                                    else -> null
+                                }
+                                if (redNode != null) {
+                                    rotateLeft(leftChild!!)
+                                    rotateRight(parent)
+                                } else {
+                                    leftChild?.flipColor()
+                                    grandChild?.flipColor()
+                                    rotateRight(parent!!)
+                                }
+                                break
+                            } else {
+                                if (isRed(leftChild?.left) || isRed(leftChild?.right)) {
+                                    //leftChild has at least one red child
+                                    parent?.flipColor()
+                                    if (isRed(leftChild?.right)) {
+                                        leftChild?.right?.flipColor()
+                                        rotateLeft(leftChild!!)
+                                    } else {
+                                        leftChild?.left?.flipColor()
+                                    }
+                                    rotateRight(parent!!)
+                                    break
+                                } else {
+                                    // here leftChild can not be null
+                                    leftChild?.left?.flipColor()
+                                    currentNode = parent!!
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            node.left != null -> {
+                node.left?.flipColor()
+                val parent = node.parent
+                if (parent?.left == node) parent.left = node.left
+                else parent?.right = node.left
+            }
+
+            else -> {
+                node.right?.flipColor()
+                val parent = node.parent
+                if (parent?.left == node) parent.left = node.right
+                else parent?.right = node.right
+            }
+        }
+
+        // go to root
+        while (currentNode.parent != null) {
+            currentNode = currentNode.parent!!
+        }
+
+        return currentNode
     }
 }
