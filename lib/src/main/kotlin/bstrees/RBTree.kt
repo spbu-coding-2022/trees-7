@@ -16,6 +16,29 @@ class RBTree<T : Comparable<T>> : SelfBalancingBST<T, RBNode<T>>() {
     }
 
     override fun delete(data: T): T? {
-        TODO("Not yet implemented")
+        val foundNode = searchNode(data) ?: return null
+        val result = foundNode.data
+
+        val nodeToDelete = if (foundNode.left != null && foundNode.right != null) {
+            val nodeToReplaceWith = findNodeToReplaceWith(foundNode)
+            foundNode.data = nodeToReplaceWith.data
+            nodeToReplaceWith
+        } else {
+            foundNode
+        }
+
+        //nodeToDelete has one child or zero
+        treeRoot = balancer.balanceAfterDeletion(nodeToDelete)
+
+        return result
+    }
+
+    /** Searches for node's successor until the node value is placed on the leaf of the tree. */
+    private fun findNodeToReplaceWith(node: RBNode<T>): RBNode<T> {
+        var nodeToReplaceWith = node.left!!
+        while (nodeToReplaceWith.right != null) {
+            nodeToReplaceWith = nodeToReplaceWith.right!!
+        }
+        return nodeToReplaceWith
     }
 }
