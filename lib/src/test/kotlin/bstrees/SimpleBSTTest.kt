@@ -23,7 +23,7 @@ class SimpleBSTTest {
     fun `invariant after insertion`() {
         values.forEach(tree::insert)
 
-        assertTrue(checkBSTInvariant(tree.root), "BST invariant is not held")
+        assertTrue(checkBSTInvariant(tree), "BST invariant is not held")
     }
 
     @Test
@@ -31,14 +31,14 @@ class SimpleBSTTest {
         values.forEach(tree::insert)
         values.slice(100..700).forEach(tree::insert) // insert some elements again
 
-        assertTrue(checkBSTInvariant(tree.root), "BST invariant is not held")
+        assertTrue(checkBSTInvariant(tree), "BST invariant is not held")
     }
 
     @Test
     fun `tree contains all inserted elements`() {
         values.forEach(tree::insert)
 
-        val treeElems = mutableListOf<Int>().also { traverseInOrder(tree.root, it) }
+        val treeElems = traverseInOrder(tree)
         assertTrue(
                 values.size == treeElems.size,
                 "Tree doesn't have the same number of elements as inserted"
@@ -54,7 +54,7 @@ class SimpleBSTTest {
         values.forEach(tree::insert)
         values.slice(250..720).forEach(tree::insert) // insert some elements again
 
-        val treeElems = mutableListOf<Int>().also { traverseInOrder(tree.root, it) }
+        val treeElems = traverseInOrder(tree)
         assertTrue(
                 values.size == treeElems.size,
                 "Tree doesn't have the same number of elements as inserted"
@@ -71,7 +71,7 @@ class SimpleBSTTest {
 
         values.slice(200..550).forEach(tree::delete) // delete some elements
 
-        assertTrue(checkBSTInvariant(tree.root), "BST invariant is not held")
+        assertTrue(checkBSTInvariant(tree), "BST invariant is not held")
     }
 
     @Test
@@ -81,7 +81,7 @@ class SimpleBSTTest {
 
         toDelete.forEach(tree::delete) // delete some elements
 
-        val treeElems = mutableListOf<Int>().also { traverseInOrder(tree.root, it) }
+        val treeElems = traverseInOrder(tree)
         val expectedElems = values.subtract(toDelete.toSet())
         assertTrue(
                 expectedElems.size == treeElems.size,
