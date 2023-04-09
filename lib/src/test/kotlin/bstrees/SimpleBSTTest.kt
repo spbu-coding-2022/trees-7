@@ -20,6 +20,11 @@ class SimpleBSTTest {
     }
 
     @Test
+    fun `newly instantiated tree has null root`() {
+        assertEquals(null, tree.root, "Tree must have null root after initialization")
+    }
+
+    @Test
     fun `invariant after insertion`() {
         values.forEach {
             tree.insert(it)
@@ -33,7 +38,7 @@ class SimpleBSTTest {
         values.forEach(tree::insert)
 
         values.slice(100..700).forEach {
-            tree.insert(it)  // insert element again
+            tree.insert(it)
 
             assertTrue(checkBSTInvariant(tree), "BST invariant is not held")
         }
@@ -45,12 +50,12 @@ class SimpleBSTTest {
 
         val treeElems = traverseInOrder(tree)
         assertTrue(
-                values.size == treeElems.size,
-                "Tree doesn't have the same number of elements as inserted"
+            values.size == treeElems.size,
+            "Tree doesn't have the same number of elements as inserted"
         )
         assertTrue(
-                values.containsAll(treeElems) && treeElems.containsAll(values),
-                "Elements in the tree are not the ones that were inserted"
+            values.containsAll(treeElems) && treeElems.containsAll(values),
+            "Elements in the tree are not the ones that were inserted"
         )
     }
 
@@ -61,12 +66,12 @@ class SimpleBSTTest {
 
         val treeElems = traverseInOrder(tree)
         assertTrue(
-                values.size == treeElems.size,
-                "Tree doesn't have the same number of elements as inserted"
+            values.size == treeElems.size,
+            "Tree doesn't have the same number of elements as inserted"
         )
         assertTrue(
-                values.containsAll(treeElems) && treeElems.containsAll(values),
-                "Elements in the tree are not the ones that were inserted"
+            values.containsAll(treeElems) && treeElems.containsAll(values),
+            "Elements in the tree are not the ones that were inserted"
         )
     }
 
@@ -75,7 +80,7 @@ class SimpleBSTTest {
         values.forEach(tree::insert)
 
         values.slice(200..550).forEach {
-            tree.delete(it) // delete element
+            tree.delete(it)
 
             assertTrue(checkBSTInvariant(tree), "BST invariant is not held")
         }
@@ -91,12 +96,12 @@ class SimpleBSTTest {
         val treeElems = traverseInOrder(tree)
         val expectedElems = values.subtract(toDelete.toSet())
         assertTrue(
-                expectedElems.size == treeElems.size,
-                "Tree doesn't have the same number of elements as expected"
+            expectedElems.size == treeElems.size,
+            "Tree doesn't have the same number of elements as expected"
         )
         assertTrue(
-                expectedElems.containsAll(treeElems) && treeElems.containsAll(expectedElems),
-                "Elements in the tree are not the ones that were expected"
+            expectedElems.containsAll(treeElems) && treeElems.containsAll(expectedElems),
+            "Elements in the tree are not the ones that were expected"
         )
     }
 
@@ -107,8 +112,8 @@ class SimpleBSTTest {
         values.forEach(tree::delete) // delete everything
 
         assertEquals(
-                null, tree.root,
-                "Tree must have null root after deletion of every element"
+            null, tree.root,
+            "Tree must have null root after deletion of every element"
         )
     }
 
@@ -127,8 +132,8 @@ class SimpleBSTTest {
 
         values.takeLast(500).forEach {
             assertEquals(
-                    null, tree.delete(it),
-                    "Delete method must return null if value to delete not found"
+                null, tree.delete(it),
+                "Delete method must return null if value to delete not found"
             )
         }
     }
@@ -148,8 +153,8 @@ class SimpleBSTTest {
 
         values.takeLast(500).forEach {
             assertEquals(
-                    null, tree.search(it),
-                    "Search method must return null if value not found"
+                null, tree.search(it),
+                "Search method must return null if value not found"
             )
         }
     }
