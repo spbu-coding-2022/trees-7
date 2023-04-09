@@ -27,8 +27,41 @@ class RBTree<T : Comparable<T>> : SelfBalancingBST<T, RBNode<T>>() {
             foundNode
         }
 
+        fun changeChild(wasChild: RBNode<T>, newChild: RBNode<T>?) {
+            val parent = wasChild.parent
+            if (parent == null) {
+                root = newChild
+            } else if (parent.left == wasChild) {
+                parent.left = newChild
+            } else {
+                parent.right = newChild
+            }
+
+            newChild?.let { newChild.parent = wasChild.parent }
+        }
+
         //nodeToDelete has one child or zero
-        treeRoot = balancer.balanceAfterDeletion(nodeToDelete)
+        when {
+            // node is the leaf
+            nodeToDelete.left == null && nodeToDelete.right == null -> {
+                // update children of the parent of the deleted node
+                changeChild(nodeToDelete, null)
+
+                if (nodeToDelete.color == RBNode.Color.Black) {
+                    root = balancer.balanceAfterDeletion(nodeToDelete)
+                }
+            }
+
+            nodeToDelete.left != null -> {
+                nodeToDelete.left?.flipColor()
+                changeChild(nodeToDelete, nodeToDelete.left)
+            }
+
+            else -> {
+                nodeToDelete.right?.flipColor()
+                changeChild(nodeToDelete, nodeToDelete.right)
+            }
+        }
 
         return result
     }
