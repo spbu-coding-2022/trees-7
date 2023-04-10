@@ -45,11 +45,13 @@ class RBTree<T : Comparable<T>> : SelfBalancingBST<T, RBNode<T>>() {
             // node is the leaf
             nodeToDelete.left == null && nodeToDelete.right == null -> {
                 // update children of the parent of the deleted node
-                changeChild(nodeToDelete, null)
 
                 if (nodeToDelete.color == RBNode.Color.Black) {
                     root = balancer.balanceAfterDeletion(nodeToDelete)
                 }
+
+                changeChild(nodeToDelete, null)
+
             }
 
             nodeToDelete.left != null -> {

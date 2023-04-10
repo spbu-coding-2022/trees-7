@@ -100,10 +100,63 @@ class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
         while (currentNode.parent != null && isBlack(currentNode)) {
             val parent = currentNode.parent
             if (parent?.left == currentNode) {
-                TODO()
-            } else {
+                val rightChild = parent.right
                 if (isRed(parent)) {
-                    val leftChild = parent?.left
+                    // here rightChild must be black
+                    if (isRed(rightChild?.left) || isRed(rightChild?.right)) {
+                        //rightChild has at least one red child
+                        parent.flipColor()
+                        if (isRed(rightChild?.left)) {
+                            rotateRight(rightChild!!)
+                        } else {
+                            rightChild?.flipColor()
+                            rightChild?.right?.flipColor()
+                        }
+                        currentNode = rotateLeft(parent)
+                    } else {
+                        parent.flipColor()
+                        rightChild?.flipColor()
+                    }
+                    break
+                } else {
+                    if (isRed(rightChild)) {
+                        // here leftChild and leftChild.right can not be null
+                        var grandChild = rightChild?.left
+                        if (isRed(grandChild?.left) || isRed(grandChild?.right)) {
+                            if (isBlack(grandChild?.right)) {
+                                grandChild?.flipColor()
+                                grandChild?.left?.flipColor()
+                                grandChild = rotateRight(grandChild!!)
+                            }
+                            grandChild?.right?.flipColor()
+                            rotateRight(rightChild!!)
+                        } else {
+                            rightChild?.flipColor()
+                            grandChild?.flipColor()
+                        }
+                        currentNode = rotateLeft(parent)
+                        break
+                    } else {
+                        if (isRed(rightChild?.left) || isRed(rightChild?.right)) {
+                            //rightChild has at least one red child
+                            if (isRed(rightChild?.left)) {
+                                rightChild?.left?.flipColor()
+                                rotateRight(rightChild!!)
+                            } else {
+                                rightChild?.right?.flipColor()
+                            }
+                            currentNode = rotateLeft(parent)
+                            break
+                        } else {
+                            // here rightChild can not be null
+                            rightChild?.flipColor()
+                            currentNode = parent
+                        }
+                    }
+                }
+            } else {
+                val leftChild = parent?.left
+                if (isRed(parent)) {
                     // here leftChild must be black
                     if (isRed(leftChild?.left) || isRed(leftChild?.right)) {
                         //leftChild has at least one red child
@@ -114,50 +167,44 @@ class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
                             leftChild?.flipColor()
                             leftChild?.left?.flipColor()
                         }
-                        rotateRight(parent!!)
+                        currentNode = rotateRight(parent!!)
                     } else {
                         parent?.flipColor()
                         leftChild?.flipColor()
                     }
                     break
                 } else {
-                    val leftChild = parent?.left
                     if (isRed(leftChild)) {
                         // here leftChild and leftChild.right can not be null
-                        val grandChild = leftChild?.right
-                        val redNode = when {
-                            isRed(grandChild?.left) -> {
-                                grandChild?.left?.flipColor()
-                                grandChild?.left
+                        var grandChild = leftChild?.right
+                        if (isRed(grandChild?.left) || isRed(grandChild?.right)) {
+                            if (isBlack(grandChild?.left)) {
+                                grandChild?.flipColor()
+                                grandChild?.right?.flipColor()
+                                grandChild = rotateLeft(grandChild!!)
                             }
-
-                            isRed(grandChild?.right) -> grandChild?.right
-                            else -> null
-                        }
-                        if (redNode != null) {
+                            grandChild?.left?.flipColor()
                             rotateLeft(leftChild!!)
-                            rotateRight(parent)
                         } else {
                             leftChild?.flipColor()
                             grandChild?.flipColor()
-                            rotateRight(parent!!)
                         }
+                        currentNode = rotateRight(parent!!)
                         break
                     } else {
                         if (isRed(leftChild?.left) || isRed(leftChild?.right)) {
                             //leftChild has at least one red child
-                            parent?.flipColor()
                             if (isRed(leftChild?.right)) {
                                 leftChild?.right?.flipColor()
                                 rotateLeft(leftChild!!)
                             } else {
                                 leftChild?.left?.flipColor()
                             }
-                            rotateRight(parent!!)
+                            currentNode = rotateRight(parent!!)
                             break
                         } else {
                             // here leftChild can not be null
-                            leftChild?.left?.flipColor()
+                            leftChild?.flipColor()
                             currentNode = parent!!
                         }
                     }
