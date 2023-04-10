@@ -79,7 +79,7 @@ class AVLBalancer<T : Comparable<T>> : TreeBalancer<T, AVLNode<T>> {
             // LL or LR
             2 -> when (balanceFactor(currentNode.left!!)) {
                 // LL
-                1 -> currentNode = rotateRight(currentNode)
+                1, 0 -> currentNode = rotateRight(currentNode)
 
                 // LR
                 -1 -> {
@@ -91,7 +91,7 @@ class AVLBalancer<T : Comparable<T>> : TreeBalancer<T, AVLNode<T>> {
             // RR or RL
             -2 -> when (balanceFactor(currentNode.right!!)) {
                 // RR
-                -1 -> currentNode = rotateLeft(currentNode)
+                -1, 0 -> currentNode = rotateLeft(currentNode)
 
                 // RL
                 1 -> {
@@ -109,7 +109,11 @@ class AVLBalancer<T : Comparable<T>> : TreeBalancer<T, AVLNode<T>> {
         return currentNode
     }
 
-    override fun balanceAfterDeletion(node: AVLNode<T>): AVLNode<T> {
-        TODO("Not yet implemented")
-    }
+    /**
+     * Balances AVL tree after deletion of an element.
+     * Must be called after every delete with deleted node's parent as parameter.
+     * Note that deleted node is a node that doesn't belong to the tree.
+     * Returns new root of the tree
+     */
+    override fun balanceAfterDeletion(node: AVLNode<T>) = balanceAfterInsertion(node)
 }
