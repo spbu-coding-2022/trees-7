@@ -34,8 +34,11 @@ class RBTreeTest {
                 val rightResult = checkRBRecursively(it.right)
                 val rightBlackHeight = blackHeights[it.right] ?: 1
 
-                val checkRedNode = if (isRed(node)) isBlack(node.left) && isBlack(node.right)
+                val checkRedNode = if (isRed(it)) isBlack(it.left) && isBlack(it.right)
                 else true
+
+                blackHeights[it] = if (isBlack(it)) leftBlackHeight + 1
+                else leftBlackHeight
 
                 return leftResult && rightResult && (leftBlackHeight == rightBlackHeight) && checkRedNode
             }
