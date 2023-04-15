@@ -3,7 +3,7 @@ package bstrees.balancers
 import bstrees.nodes.AVLNode
 import kotlin.math.max
 
-class AVLBalancer<T : Comparable<T>> : TreeBalancer<T, AVLNode<T>> {
+internal class AVLBalancer<T : Comparable<T>> : TreeBalancer<T, AVLNode<T>> {
     /**
      * Rotates right edge of the [node] counterclockwise.
      * Returns node that will be in place of the [node] passed

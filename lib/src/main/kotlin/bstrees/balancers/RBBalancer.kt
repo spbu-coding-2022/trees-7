@@ -2,7 +2,7 @@ package bstrees.balancers
 
 import bstrees.nodes.RBNode
 
-class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
+internal class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
     private fun getColor(node: RBNode<T>?) = node?.color ?: RBNode.Color.Black
 
     private fun isRed(node: RBNode<T>?) = getColor(node) == RBNode.Color.Red
