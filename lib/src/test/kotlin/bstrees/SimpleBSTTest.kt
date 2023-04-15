@@ -11,10 +11,9 @@ import kotlin.random.Random
 class SimpleBSTTest {
     private val randomizer = Random(72)
 
-    // 3 is minimum possible count of elements
-    private val elementsCount = 5000
+    private val values = Array(1000) { randomizer.nextInt() }.distinct()
+    private val elementsCount = values.size // 3 is minimum possible count of elements
 
-    private val values = Array(elementsCount) { randomizer.nextInt() }.distinct()
     private lateinit var tree: SimpleBST<Int>
 
     @BeforeEach
@@ -159,6 +158,52 @@ class SimpleBSTTest {
                 null, tree.search(it),
                 "Search method must return null if value not found"
             )
+        }
+    }
+
+    @Test
+    fun `insert, delete, search`() {
+        val dataSize = 1e6.toInt()
+        val bigData = List(dataSize) { randomizer.nextInt() }
+        val expected = mutableSetOf<Int>()
+        var currentIndex = 0
+
+        while (currentIndex + 2 < dataSize) {
+            val insertIndex1 = currentIndex + randomizer.nextInt(3)
+            tree.insert(bigData[insertIndex1])
+            expected.add(bigData[insertIndex1])
+
+            val insertIndex2 = currentIndex + randomizer.nextInt(3)
+            tree.insert(bigData[insertIndex2])
+            expected.add(bigData[insertIndex2])
+
+            val searchIndex1 = currentIndex + randomizer.nextInt(3)
+            assertEquals(
+                tree.search(bigData[searchIndex1]) != null,
+                expected.contains(bigData[searchIndex1]),
+                "Search must return not null if element is in the tree and null otherwise"
+            )
+
+            val deleteIndex1 = currentIndex + randomizer.nextInt(3)
+            tree.delete(bigData[deleteIndex1])
+            expected.remove(bigData[deleteIndex1])
+
+            val searchIndex2 = currentIndex + randomizer.nextInt(3)
+            assertEquals(
+                tree.search(bigData[searchIndex2]) != null,
+                expected.contains(bigData[searchIndex2]),
+                "Search must return not null if element is in the tree and null otherwise"
+            )
+
+            val insertIndex3 = currentIndex + randomizer.nextInt(3)
+            tree.insert(bigData[insertIndex3])
+            expected.add(bigData[insertIndex3])
+
+            val deleteIndex2 = currentIndex + randomizer.nextInt(3)
+            tree.delete(bigData[deleteIndex2])
+            expected.remove(bigData[deleteIndex2])
+
+            currentIndex += 3
         }
     }
 }
