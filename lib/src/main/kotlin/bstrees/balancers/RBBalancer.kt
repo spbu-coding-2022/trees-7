@@ -94,7 +94,11 @@ class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
         return currentNode
     }
 
-    /** Accepts the node to be deleted. Returns new tree root */
+    /**
+     * Accepts the node to be deleted. Returns new tree root.
+     *
+     * Doesn't itself delete [node]. Caller must delete the node on their own
+     */
     override fun balanceAfterDeletion(node: RBNode<T>): RBNode<T> {
         var currentNode = node
         while (currentNode.parent != null && isBlack(currentNode)) {
