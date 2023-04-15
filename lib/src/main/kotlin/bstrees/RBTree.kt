@@ -36,7 +36,7 @@ class RBTree<T : Comparable<T>> : SelfBalancingBST<T, RBNode<T>>() {
                 parent.right = newChild
             }
 
-            newChild?.let { newChild.parent = wasChild.parent }
+            newChild?.parent = wasChild.parent
         }
 
         //nodeToDelete has one child or zero
@@ -67,7 +67,7 @@ class RBTree<T : Comparable<T>> : SelfBalancingBST<T, RBNode<T>>() {
         return result
     }
 
-    /** Searches for node's successor until the node value is placed on the leaf of the tree. */
+    /** Searches for node's in-order predecessor */
     private fun findNodeToReplaceWith(node: RBNode<T>): RBNode<T> {
         var nodeToReplaceWith = node.left!!
         while (nodeToReplaceWith.right != null) {
