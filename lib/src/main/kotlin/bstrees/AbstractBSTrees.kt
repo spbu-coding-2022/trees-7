@@ -143,5 +143,5 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
 
 abstract class SelfBalancingBST<T : Comparable<T>, NodeType : TreeNode<T, NodeType>> :
     BinarySearchTree<T, NodeType>() {
-    protected abstract val balancer: TreeBalancer<T, NodeType>
+    internal abstract val balancer: TreeBalancer<T, NodeType>
 }
