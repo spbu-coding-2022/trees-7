@@ -10,6 +10,10 @@ repositories {
 
 dependencies {
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.exposed.core)
+    implementation(libs.exposed.dao)
+    implementation(libs.exposed.jdbc)
+
     testImplementation(libs.junit.jupiter)
 }
 

@@ -9,6 +9,12 @@ dependencyResolutionManagement {
             plugin("kotlin-serialization", "org.jetbrains.kotlin.plugin.serialization").versionRef("kotlin")
 
             library("kotlinx-serialization-json", "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+
+            version("exposed", "0.41.1")
+            library("exposed-core", "org.jetbrains.exposed", "exposed-core").versionRef("exposed")
+            library("exposed-dao", "org.jetbrains.exposed", "exposed-dao").versionRef("exposed")
+            library("exposed-jdbc", "org.jetbrains.exposed", "exposed-jdbc").versionRef("exposed")
+
             library("junit-jupiter", "org.junit.jupiter:junit-jupiter:5.9.2")
         }
     }
