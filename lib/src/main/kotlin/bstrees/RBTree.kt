@@ -69,9 +69,11 @@ class RBTree<T : Comparable<T>> : SelfBalancingBST<T, RBNode<T>>() {
 
     /** Searches for node's in-order predecessor */
     private fun findNodeToReplaceWith(node: RBNode<T>): RBNode<T> {
-        var nodeToReplaceWith = node.left!!
+        var nodeToReplaceWith = node.left
+            ?: throw IllegalStateException("node must have two children")
         while (nodeToReplaceWith.right != null) {
-            nodeToReplaceWith = nodeToReplaceWith.right!!
+            nodeToReplaceWith = nodeToReplaceWith.right
+                ?: throw IllegalStateException("nodeToReplaceWith must have right child")
         }
         return nodeToReplaceWith
     }

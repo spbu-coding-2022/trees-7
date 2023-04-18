@@ -43,7 +43,8 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
             return createdNode
         }
 
-        var currentNode = root!!
+        var currentNode = root
+            ?: throw IllegalStateException("Case when the root is null is processed above")
         while (true) {
             val res = data.compareTo(currentNode.data)
             if (res < 0) {
@@ -53,7 +54,8 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
                     createdNode.parent = currentNode
                     return createdNode
                 }
-                currentNode = currentNode.left!!
+                currentNode = currentNode.left
+                    ?: throw IllegalStateException("Case when the left child of the currentNode is null is processed above")
             } else if (res > 0) {
                 if (currentNode.right == null) {
                     val createdNode = createNewNode(data)
@@ -61,7 +63,8 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
                     createdNode.parent = currentNode
                     return createdNode
                 }
-                currentNode = currentNode.right!!
+                currentNode = currentNode.right
+                    ?: throw IllegalStateException("Case when the right child of the currentNode is null is processed above")
             } else {
                 currentNode.data = data
                 return null
@@ -114,11 +117,11 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
             root = node.left ?: node.right
             root?.parent = null
         } else {
-            val nodeToReplaceWith = if (node.left == null) node.right!! else node.left!!
+            val nodeToReplaceWith = if (node.left == null) node.right else node.left
             if (parent.right == node) parent.right = nodeToReplaceWith
             else parent.left = nodeToReplaceWith
 
-            nodeToReplaceWith.parent = parent
+            nodeToReplaceWith?.parent = parent
         }
         return node
     }
@@ -130,9 +133,11 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
      */
     private fun deleteNodeWithTwoChildren(node: NodeType): NodeType {
         // find in-order predecessor
-        var nodeToReplaceWith = node.left!!
+        var nodeToReplaceWith = node.left
+            ?: throw IllegalStateException("node must have two children")
         while (nodeToReplaceWith.right != null)
-            nodeToReplaceWith = nodeToReplaceWith.right!!
+            nodeToReplaceWith = nodeToReplaceWith.right
+                ?: throw IllegalStateException("nodeToReplaceWith must have right child")
 
         // replace data and delete predecessor
         node.data = nodeToReplaceWith.data

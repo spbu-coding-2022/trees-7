@@ -77,26 +77,30 @@ internal class AVLBalancer<T : Comparable<T>> : TreeBalancer<T, AVLNode<T>> {
         var currentNode = node
         when (balanceFactor(currentNode)) {
             // LL or LR
-            2 -> when (balanceFactor(currentNode.left!!)) {
-                // LL
-                1, 0 -> currentNode = rotateRight(currentNode)
+            2 -> currentNode.left?.let {
+                when (balanceFactor(it)) {
+                    // LL
+                    1, 0 -> currentNode = rotateRight(currentNode)
 
-                // LR
-                -1 -> {
-                    rotateLeft(currentNode.left!!)
-                    currentNode = rotateRight(currentNode)
+                    // LR
+                    -1 -> {
+                        rotateLeft(it)
+                        currentNode = rotateRight(currentNode)
+                    }
                 }
             }
 
             // RR or RL
-            -2 -> when (balanceFactor(currentNode.right!!)) {
-                // RR
-                -1, 0 -> currentNode = rotateLeft(currentNode)
+            -2 -> currentNode.right?.let {
+                when (balanceFactor(it)) {
+                    // RR
+                    -1, 0 -> currentNode = rotateLeft(currentNode)
 
-                // RL
-                1 -> {
-                    rotateRight(currentNode.right!!)
-                    currentNode = rotateLeft(currentNode)
+                    // RL
+                    1 -> {
+                        rotateRight(it)
+                        currentNode = rotateLeft(currentNode)
+                    }
                 }
             }
 
