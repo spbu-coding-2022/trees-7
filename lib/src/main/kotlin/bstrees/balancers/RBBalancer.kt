@@ -56,17 +56,19 @@ internal class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
 
         while (currentNode.parent != null && isRed(currentNode.parent)) {
             val parent = currentNode.parent
-            val grandParent = parent!!.parent
+                ?: throw IllegalStateException("parent can not be null")
+            val grandParent = parent.parent
+                ?: throw IllegalStateException("grandParent can not be null")
             val uncle = getUncle(currentNode)
 
             if (isRed(uncle)) {
                 // here parent, uncle and grandParent can not be null
                 parent.flipColor()
-                uncle!!.flipColor()
-                grandParent!!.flipColor()
+                grandParent.flipColor()
+                uncle?.flipColor()
                 currentNode = grandParent
             } else {
-                if (grandParent!!.left == parent) {
+                if (grandParent.left == parent) {
                     if (currentNode == parent.right) rotateLeft(parent)
                     currentNode = rotateRight(grandParent)
                     currentNode.right?.flipColor()
@@ -88,7 +90,8 @@ internal class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
 
         // go to root
         while (currentNode.parent != null) {
-            currentNode = currentNode.parent!!
+            currentNode = currentNode.parent
+                ?: throw IllegalStateException("currentNode must have parent")
         }
 
         return currentNode
@@ -103,113 +106,125 @@ internal class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
         var currentNode = node
         while (currentNode.parent != null && isBlack(currentNode)) {
             val parent = currentNode.parent
-            if (parent?.left == currentNode) {
+                ?: throw IllegalStateException("parent can not be null")
+            if (parent.left == currentNode) {
                 val rightChild = parent.right
+                    ?: throw IllegalStateException("parent must have right child")
                 if (isRed(parent)) {
                     // here rightChild must be black
-                    if (isRed(rightChild?.left) || isRed(rightChild?.right)) {
+                    if (isRed(rightChild.left) || isRed(rightChild.right)) {
                         //rightChild has at least one red child
                         parent.flipColor()
-                        if (isRed(rightChild?.left)) {
-                            rotateRight(rightChild!!)
+                        if (isRed(rightChild.left)) {
+                            rotateRight(rightChild)
                         } else {
-                            rightChild?.flipColor()
-                            rightChild?.right?.flipColor()
+                            rightChild.flipColor()
+                            rightChild.right?.flipColor()
                         }
                         currentNode = rotateLeft(parent)
                     } else {
+                        //rightChild has not any red children
                         parent.flipColor()
-                        rightChild?.flipColor()
+                        rightChild.flipColor()
                     }
                     break
                 } else {
                     if (isRed(rightChild)) {
-                        // here leftChild and leftChild.right can not be null
-                        var grandChild = rightChild?.left
-                        if (isRed(grandChild?.left) || isRed(grandChild?.right)) {
-                            if (isBlack(grandChild?.right)) {
-                                grandChild?.flipColor()
-                                grandChild?.left?.flipColor()
-                                grandChild = rotateRight(grandChild!!)
+                        var grandChild = rightChild.left
+                            ?: throw IllegalStateException("grandChild can not be null")
+                        //grandChild must be black
+                        if (isRed(grandChild.left) || isRed(grandChild.right)) {
+                            //grandChild has at least one red child
+                            if (isBlack(grandChild.right)) {
+                                grandChild.flipColor()
+                                grandChild.left?.flipColor()
+
+                                grandChild = rotateRight(grandChild)
                             }
-                            grandChild?.right?.flipColor()
-                            rotateRight(rightChild!!)
+                            grandChild.right?.flipColor()
+                            rotateRight(rightChild)
                         } else {
-                            rightChild?.flipColor()
-                            grandChild?.flipColor()
+                            //grandChild has not any red children
+                            rightChild.flipColor()
+                            grandChild.flipColor()
                         }
                         currentNode = rotateLeft(parent)
                         break
                     } else {
-                        if (isRed(rightChild?.left) || isRed(rightChild?.right)) {
+                        if (isRed(rightChild.left) || isRed(rightChild.right)) {
                             //rightChild has at least one red child
-                            if (isRed(rightChild?.left)) {
-                                rightChild?.left?.flipColor()
-                                rotateRight(rightChild!!)
+                            if (isRed(rightChild.left)) {
+                                rightChild.left?.flipColor()
+                                rotateRight(rightChild)
                             } else {
-                                rightChild?.right?.flipColor()
+                                rightChild.right?.flipColor()
                             }
                             currentNode = rotateLeft(parent)
                             break
                         } else {
-                            // here rightChild can not be null
-                            rightChild?.flipColor()
+                            //rightChild has not any red children
+                            rightChild.flipColor()
                             currentNode = parent
                         }
                     }
                 }
             } else {
-                val leftChild = parent?.left
+                val leftChild = parent.left
+                    ?: throw IllegalStateException("parent must have left child")
                 if (isRed(parent)) {
                     // here leftChild must be black
-                    if (isRed(leftChild?.left) || isRed(leftChild?.right)) {
+                    if (isRed(leftChild.left) || isRed(leftChild.right)) {
                         //leftChild has at least one red child
-                        parent?.flipColor()
-                        if (isRed(leftChild?.right)) {
-                            rotateLeft(leftChild!!)
+                        parent.flipColor()
+                        if (isRed(leftChild.right)) {
+                            rotateLeft(leftChild)
                         } else {
-                            leftChild?.flipColor()
-                            leftChild?.left?.flipColor()
+                            leftChild.flipColor()
+                            leftChild.left?.flipColor()
                         }
-                        currentNode = rotateRight(parent!!)
+                        currentNode = rotateRight(parent)
                     } else {
-                        parent?.flipColor()
-                        leftChild?.flipColor()
+                        //leftChild has not any red children
+                        parent.flipColor()
+                        leftChild.flipColor()
                     }
                     break
                 } else {
                     if (isRed(leftChild)) {
-                        // here leftChild and leftChild.right can not be null
-                        var grandChild = leftChild?.right
-                        if (isRed(grandChild?.left) || isRed(grandChild?.right)) {
-                            if (isBlack(grandChild?.left)) {
-                                grandChild?.flipColor()
-                                grandChild?.right?.flipColor()
-                                grandChild = rotateLeft(grandChild!!)
+                        var grandChild = leftChild.right
+                            ?: throw IllegalStateException("grandChild can not be null")
+                        //grandChild must be black
+                        if (isRed(grandChild.left) || isRed(grandChild.right)) {
+                            //grandChild has at least one red child
+                            if (isBlack(grandChild.left)) {
+                                grandChild.flipColor()
+                                grandChild.right?.flipColor()
+                                grandChild = rotateLeft(grandChild)
                             }
-                            grandChild?.left?.flipColor()
-                            rotateLeft(leftChild!!)
+                            grandChild.left?.flipColor()
+                            rotateLeft(leftChild)
                         } else {
-                            leftChild?.flipColor()
-                            grandChild?.flipColor()
+                            //grandChild has not any red children
+                            leftChild.flipColor()
+                            grandChild.flipColor()
                         }
-                        currentNode = rotateRight(parent!!)
+                        currentNode = rotateRight(parent)
                         break
                     } else {
-                        if (isRed(leftChild?.left) || isRed(leftChild?.right)) {
+                        if (isRed(leftChild.left) || isRed(leftChild.right)) {
                             //leftChild has at least one red child
-                            if (isRed(leftChild?.right)) {
-                                leftChild?.right?.flipColor()
-                                rotateLeft(leftChild!!)
+                            if (isRed(leftChild.right)) {
+                                leftChild.right?.flipColor()
+                                rotateLeft(leftChild)
                             } else {
-                                leftChild?.left?.flipColor()
+                                leftChild.left?.flipColor()
                             }
-                            currentNode = rotateRight(parent!!)
+                            currentNode = rotateRight(parent)
                             break
                         } else {
-                            // here leftChild can not be null
-                            leftChild?.flipColor()
-                            currentNode = parent!!
+                            //leftChild has not any red children
+                            leftChild.flipColor()
+                            currentNode = parent
                         }
                     }
                 }
@@ -218,7 +233,8 @@ internal class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
 
         // go to root
         while (currentNode.parent != null) {
-            currentNode = currentNode.parent!!
+            currentNode = currentNode.parent
+                ?: throw IllegalStateException("currentNode must have parent")
         }
 
         return currentNode
