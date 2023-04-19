@@ -2,7 +2,7 @@ package bstrees.balancers
 
 import bstrees.nodes.RBNode
 
-internal class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
+internal class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>>() {
     private fun getColor(node: RBNode<T>?) = node?.color ?: RBNode.Color.Black
 
     private fun isRed(node: RBNode<T>?) = getColor(node) == RBNode.Color.Red
@@ -18,36 +18,6 @@ internal class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>> {
     private fun getUncle(node: RBNode<T>): RBNode<T>? {
         val parent = node.parent ?: return null
         return getSibling(parent)
-    }
-
-    private fun rotateRight(node: RBNode<T>): RBNode<T> {
-        val parent = node.parent
-        val wasChild = node.left
-            ?: throw IllegalArgumentException("Node to rotate must have a left child")
-        node.left = wasChild.right
-        wasChild.right = node
-        node.left?.parent = node
-        node.parent = wasChild
-
-        if (parent?.left == node) parent.left = wasChild else parent?.right = wasChild
-        wasChild.parent = parent
-
-        return wasChild
-    }
-
-    private fun rotateLeft(node: RBNode<T>): RBNode<T> {
-        val parent = node.parent
-        val wasChild = node.right
-            ?: throw IllegalArgumentException("Node to rotate must have a right child")
-        node.right = wasChild.left
-        wasChild.left = node
-        node.right?.parent = node
-        node.parent = wasChild
-
-        if (parent?.left == node) parent.left = wasChild else parent?.right = wasChild
-        wasChild.parent = parent
-
-        return wasChild
     }
 
     /** Accepts the inserted node. Returns new tree root */
