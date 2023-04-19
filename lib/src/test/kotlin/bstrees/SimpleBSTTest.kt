@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
+import java.util.stream.Stream
 import kotlin.random.Random
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -161,47 +164,60 @@ class SimpleBSTTest {
         }
     }
 
-    @Test
-    fun `insert, delete, search`() {
-        val dataSize = 1e6.toInt()
-        val bigData = List(dataSize) { randomizer.nextInt() }
+    data class TestData(
+        val size: Int,
+        val seed: Int
+    )
+
+    companion object {
+        @JvmStatic
+        private fun getTestData() = Stream.of(
+            TestData(size = 10, seed = 234),
+            TestData(size = 10, seed = 13),
+            TestData(size = 1000, seed = 211),
+            TestData(size = 1000, seed = 3),
+            TestData(size = 1e6.toInt(), seed = 4886)
+        )
+    }
+
+    @ParameterizedTest()
+    @MethodSource("getTestData")
+    fun `insert, delete, search`(data: TestData) {
+        val dataSize = data.size
+        val seed = data.seed
+
+        val randomizerCurrentTest = Random(seed)
+
+        val bigData = List(dataSize) { randomizerCurrentTest.nextInt() }
         val expected = mutableSetOf<Int>()
         var currentIndex = 0
 
         while (currentIndex + 2 < dataSize) {
-            val insertIndex1 = currentIndex + randomizer.nextInt(3)
+            val insertIndex1 = currentIndex + randomizerCurrentTest.nextInt(3)
             tree.insert(bigData[insertIndex1])
             expected.add(bigData[insertIndex1])
 
-            val insertIndex2 = currentIndex + randomizer.nextInt(3)
+            val insertIndex2 = currentIndex + randomizerCurrentTest.nextInt(3)
             tree.insert(bigData[insertIndex2])
             expected.add(bigData[insertIndex2])
 
-            val searchIndex1 = currentIndex + randomizer.nextInt(3)
+            val searchIndex1 = currentIndex + randomizerCurrentTest.nextInt(3)
             assertEquals(
                 tree.search(bigData[searchIndex1]) != null,
                 expected.contains(bigData[searchIndex1]),
                 "Search must return not null if element is in the tree and null otherwise"
             )
 
-            val deleteIndex1 = currentIndex + randomizer.nextInt(3)
+            val deleteIndex1 = currentIndex + randomizerCurrentTest.nextInt(3)
             tree.delete(bigData[deleteIndex1])
             expected.remove(bigData[deleteIndex1])
 
-            val searchIndex2 = currentIndex + randomizer.nextInt(3)
+            val searchIndex2 = currentIndex + randomizerCurrentTest.nextInt(3)
             assertEquals(
                 tree.search(bigData[searchIndex2]) != null,
                 expected.contains(bigData[searchIndex2]),
                 "Search must return not null if element is in the tree and null otherwise"
             )
-
-            val insertIndex3 = currentIndex + randomizer.nextInt(3)
-            tree.insert(bigData[insertIndex3])
-            expected.add(bigData[insertIndex3])
-
-            val deleteIndex2 = currentIndex + randomizer.nextInt(3)
-            tree.delete(bigData[deleteIndex2])
-            expected.remove(bigData[deleteIndex2])
 
             currentIndex += 3
         }
