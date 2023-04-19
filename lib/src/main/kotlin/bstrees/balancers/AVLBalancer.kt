@@ -3,7 +3,7 @@ package bstrees.balancers
 import bstrees.nodes.AVLNode
 import kotlin.math.max
 
-internal class AVLBalancer<T : Comparable<T>> : TreeBalancer<T, AVLNode<T>> {
+internal class AVLBalancer<T : Comparable<T>> : TreeBalancer<T, AVLNode<T>>() {
     /**
      * Rotates right edge of the [node] counterclockwise.
      * Returns node that will be in place of the [node] passed
@@ -11,23 +11,11 @@ internal class AVLBalancer<T : Comparable<T>> : TreeBalancer<T, AVLNode<T>> {
      * Calls [updateHeight] to update heights of the nodes affected.
      * Throws [IllegalArgumentException] if [node] without right child is passed
      */
-    private fun rotateLeft(node: AVLNode<T>): AVLNode<T> {
-        val rightChild = node.right
-            ?: throw IllegalArgumentException("Node to rotate must have a right child")
-
-        rightChild.parent = node.parent
-        if (node.parent?.left == node) node.parent?.left = rightChild
-        else node.parent?.right = rightChild
-
-        node.right = rightChild.left
-        rightChild.left?.parent = node
-
-        rightChild.left = node
-        node.parent = rightChild
-
+    override fun rotateLeft(node: AVLNode<T>): AVLNode<T> {
+        val newRoot = super.rotateLeft(node)
         updateHeight(node)
-        updateHeight(rightChild)
-        return rightChild
+        updateHeight(newRoot)
+        return newRoot
     }
 
     /**
@@ -37,23 +25,11 @@ internal class AVLBalancer<T : Comparable<T>> : TreeBalancer<T, AVLNode<T>> {
      * Calls [updateHeight] to update heights of the nodes affected.
      * Throws [IllegalArgumentException] if [node] without left child is passed
      */
-    private fun rotateRight(node: AVLNode<T>): AVLNode<T> {
-        val leftChild = node.left
-            ?: throw IllegalArgumentException("Node to rotate must have a left child")
-
-        leftChild.parent = node.parent
-        if (node.parent?.left == node) node.parent?.left = leftChild
-        else node.parent?.right = leftChild
-
-        node.left = leftChild.right
-        leftChild.right?.parent = node
-
-        leftChild.right = node
-        node.parent = leftChild
-
+    override fun rotateRight(node: AVLNode<T>): AVLNode<T> {
+        val newRoot = super.rotateRight(node)
         updateHeight(node)
-        updateHeight(leftChild)
-        return leftChild
+        updateHeight(newRoot)
+        return newRoot
     }
 
     /** Returns height of the [node] in AVL tree. Returns 0 if null passed */
