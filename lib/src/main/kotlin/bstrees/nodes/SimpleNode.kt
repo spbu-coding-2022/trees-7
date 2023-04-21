@@ -1,3 +1,3 @@
 package bstrees.nodes
 
-class SimpleNode<T : Comparable<T>>(override var data: T) : TreeNode<T, SimpleNode<T>>()
+class SimpleNode<T : Comparable<T>>(data: T) : TreeNode<T, SimpleNode<T>>(data)
