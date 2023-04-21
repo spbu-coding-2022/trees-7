@@ -17,7 +17,11 @@ class RBStrategy<T : Comparable<T>>(
     override fun createNode(data: T) = RBNode(data)
     override fun createTree() = RBTree<T>()
 
-    override fun collectMetadata(node: RBNode<T>) = node.color.toString().first().toString()
+    override fun collectMetadata(node: RBNode<T>) = when (node.color) {
+        RBNode.Color.Red -> "R"
+        RBNode.Color.Black -> "B"
+    }
+
     override fun processMetadata(node: RBNode<T>, metadata: String) {
         when (metadata) {
             "R" -> node.color = RBNode.Color.Red
