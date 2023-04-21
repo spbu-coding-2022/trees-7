@@ -99,30 +99,41 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
         }
     }
 
+    /** Replaces the child of the parent of the [wasChild] to [newChild] */
+    protected fun replaceChild(wasChild: NodeType, newChild: NodeType?) {
+        val parent = wasChild.parent
+        if (parent == null) {
+            root = newChild
+        } else if (parent.left == wasChild) {
+            parent.left = newChild
+        } else {
+            parent.right = newChild
+        }
+
+        newChild?.parent = wasChild.parent
+    }
+
+    /** Searches for node's in-order predecessor */
+    protected fun findPredecessor(node: NodeType): NodeType {
+        var nodeToReplaceWith = node.left
+            ?: throw IllegalStateException("node must have two children")
+        while (nodeToReplaceWith.right != null) {
+            nodeToReplaceWith = nodeToReplaceWith.right
+                ?: throw IllegalStateException("nodeToReplaceWith must have right child")
+        }
+        return nodeToReplaceWith
+    }
+
     /** The node to be deleted is a leaf node. Returns deleted node */
     private fun deleteLeafNode(node: NodeType): NodeType {
-        val parent = node.parent
-        if (parent != null) {
-            if (parent.right == node) parent.right = null
-            else parent.left = null
-        } else root = null
+        replaceChild(node, null)
         return node
     }
 
     /** The node to be deleted has only one child. Returns deleted node */
     private fun deleteNodeWithOneChild(node: NodeType): NodeType {
-        val parent = node.parent
-
-        if (parent == null) {
-            root = node.left ?: node.right
-            root?.parent = null
-        } else {
-            val nodeToReplaceWith = if (node.left == null) node.right else node.left
-            if (parent.right == node) parent.right = nodeToReplaceWith
-            else parent.left = nodeToReplaceWith
-
-            nodeToReplaceWith?.parent = parent
-        }
+        val nodeToReplaceWith = if (node.left == null) node.right else node.left
+        replaceChild(node, nodeToReplaceWith)
         return node
     }
 
@@ -132,16 +143,10 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
      * Returns node that was actually deleted
      */
     private fun deleteNodeWithTwoChildren(node: NodeType): NodeType {
-        // find in-order predecessor
-        var nodeToReplaceWith = node.left
-            ?: throw IllegalStateException("node must have two children")
-        while (nodeToReplaceWith.right != null)
-            nodeToReplaceWith = nodeToReplaceWith.right
-                ?: throw IllegalStateException("nodeToReplaceWith must have right child")
-
+        val nodePredecessor =  findPredecessor(node)
         // replace data and delete predecessor
-        node.data = nodeToReplaceWith.data
-        return deleteNode(nodeToReplaceWith)
+        node.data = nodePredecessor.data
+        return deleteNode(nodePredecessor)
     }
 
 }
