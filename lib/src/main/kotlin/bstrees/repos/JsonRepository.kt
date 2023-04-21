@@ -47,8 +47,8 @@ class JsonRepository<T : Comparable<T>,
     // uses hash codes of trees' names as filenames
     // as storing files with arbitrary unicode names can be error-prone
 
-    override fun getNames(): List<String> =
-        File(dirPath).listFiles()?.map {
+    override val names: List<String>
+        get() = File(dirPath).listFiles()?.map {
             Json.decodeFromString<JsonTree>(it.readText()).name
         } ?: listOf()
 

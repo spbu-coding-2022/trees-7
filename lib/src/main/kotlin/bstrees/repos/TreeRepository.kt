@@ -4,7 +4,7 @@ import bstrees.BinarySearchTree
 
 interface TreeRepository<TreeType : BinarySearchTree<*, *>> {
     /** Gets the names of all trees in the repository */
-    fun getNames(): List<String>
+    val names: List<String>
 
     /** Gets the tree by its name. Returns null if such tree not found */
     operator fun get(treeName: String): TreeType?

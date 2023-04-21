@@ -80,9 +80,10 @@ class SqlRepository<T : Comparable<T>,
         }
     }
 
-    override fun getNames(): List<String> = transaction(db) {
-        DBTree.find(TreesTable.type eq bstType).map(DBTree::name)
-    }
+    override val names: List<String>
+        get() = transaction(db) {
+            DBTree.find(TreesTable.type eq bstType).map(DBTree::name)
+        }
 
     override fun get(treeName: String): TreeType? = transaction(db) {
         DBTree.find(

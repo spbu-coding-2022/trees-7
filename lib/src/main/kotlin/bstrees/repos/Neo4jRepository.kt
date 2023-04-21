@@ -65,8 +65,8 @@ class Neo4jRepository<T : Comparable<T>,
     private val session = SessionFactory(neo4jConfig, "bstrees.repos").openSession()
     private val bstType = strategy.bstType.toString()
 
-    override fun getNames(): List<String> =
-        session.loadAll(
+    override val names: List<String>
+        get() = session.loadAll(
             GraphTree::class.java,
             Filter("type", ComparisonOperator.EQUALS, bstType),
             0
