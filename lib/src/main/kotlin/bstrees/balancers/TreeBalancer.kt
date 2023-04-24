@@ -2,9 +2,9 @@ package bstrees.balancers
 
 import bstrees.nodes.TreeNode
 
-internal abstract class TreeBalancer<T : Comparable<T>, NodeType : TreeNode<T, NodeType>> {
-    abstract fun balanceAfterInsertion(node: NodeType): NodeType
-    abstract fun balanceAfterDeletion(node: NodeType): NodeType
+internal abstract class TreeBalancer<E : Comparable<E>, N : TreeNode<E, N>> {
+    abstract fun balanceAfterInsertion(node: N): N
+    abstract fun balanceAfterDeletion(node: N): N
 
     /**
      * Rotates right edge of the [node] counterclockwise.
@@ -12,7 +12,7 @@ internal abstract class TreeBalancer<T : Comparable<T>, NodeType : TreeNode<T, N
      *
      * Throws [IllegalArgumentException] if [node] without right child is passed
      */
-    protected open fun rotateLeft(node: NodeType): NodeType {
+    protected open fun rotateLeft(node: N): N {
         val rightChild = node.right
             ?: throw IllegalArgumentException("Node to rotate must have a right child")
 
@@ -35,7 +35,7 @@ internal abstract class TreeBalancer<T : Comparable<T>, NodeType : TreeNode<T, N
      *
      * Throws [IllegalArgumentException] if [node] without left child is passed
      */
-    protected open fun rotateRight(node: NodeType): NodeType {
+    protected open fun rotateRight(node: N): N {
         val leftChild = node.left
             ?: throw IllegalArgumentException("Node to rotate must have a left child")
 

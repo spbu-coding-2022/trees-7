@@ -2,18 +2,18 @@ package bstrees.repos
 
 import bstrees.BinarySearchTree
 
-interface TreeRepository<TreeType : BinarySearchTree<*, *>> {
+interface TreeRepository<T : BinarySearchTree<*, *>> {
     /** Gets the names of all trees in the repository */
-    fun getNames(): List<String>
+    val names: List<String>
 
     /** Gets the tree by its name. Returns null if such tree not found */
-    operator fun get(treeName: String): TreeType?
+    operator fun get(treeName: String): T?
 
     /**
      * Adds [tree] to the repository.
      * If tree with [treeName] already exists replaces it with provided one.
      */
-    operator fun set(treeName: String, tree: TreeType)
+    operator fun set(treeName: String, tree: T)
 
     /**
      * Removes tree from the repository.

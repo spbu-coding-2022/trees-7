@@ -56,21 +56,21 @@ internal class DBTree(id: EntityID<Int>) : IntEntity(id) {
  * Saves binary search trees in SQL database [db].
  * Acts like associative array with trees' names as keys and trees as values.
  *
- * Must be provided with [strategy] so repository knows how to work with specific [TreeType].
+ * Must be provided with [strategy] so repository knows how to work with specific [T].
  *
  * Different tree types can be saved in the same [db]
  * by creating several SqlRepositories with same [db].
- * Note that saving trees with same tree type but different data type [T]
+ * Note that saving trees with same tree type but different data type [E]
  * in the same [db] is error-prone and is not advised.
  *
  * Usage of SQLite is not advised as 'ON DELETE CASCADE' doesn't seem to work properly there:
  * after deletion of tree its nodes remain in the table.
  */
-class SqlRepository<T : Comparable<T>,
-        NodeType : TreeNode<T, NodeType>,
-        TreeType : BinarySearchTree<T, NodeType>>(
-    private val strategy: SerializationStrategy<T, NodeType, TreeType>, private val db: Database
-) : TreeRepository<TreeType> {
+class SqlRepository<E : Comparable<E>,
+        N : TreeNode<E, N>,
+        T : BinarySearchTree<E, N>>(
+    private val strategy: SerializationStrategy<E, N, T>, private val db: Database
+) : TreeRepository<T> {
     private val bstType = strategy.bstType.toString()
 
     init {
@@ -80,11 +80,12 @@ class SqlRepository<T : Comparable<T>,
         }
     }
 
-    override fun getNames(): List<String> = transaction(db) {
-        DBTree.find(TreesTable.type eq bstType).map(DBTree::name)
-    }
+    override val names: List<String>
+        get() = transaction(db) {
+            DBTree.find(TreesTable.type eq bstType).map(DBTree::name)
+        }
 
-    override fun get(treeName: String): TreeType? = transaction(db) {
+    override fun get(treeName: String): T? = transaction(db) {
         DBTree.find(
             TreesTable.type eq bstType and (TreesTable.name eq treeName)
         ).firstOrNull()?.let {
@@ -92,7 +93,7 @@ class SqlRepository<T : Comparable<T>,
         }
     }
 
-    override fun set(treeName: String, tree: TreeType): Unit = transaction(db) {
+    override fun set(treeName: String, tree: T): Unit = transaction(db) {
         remove(treeName) // remove first if already exists
 
         val dbTree = DBTree.new {
@@ -111,7 +112,7 @@ class SqlRepository<T : Comparable<T>,
         } ?: false
     }
 
-    private fun NodeType.toDBNode(dbTree: DBTree): DBNode =
+    private fun N.toDBNode(dbTree: DBTree): DBNode =
         DBNode.new {
             data = strategy.collectData(this@toDBNode)
             metadata = strategy.collectMetadata(this@toDBNode)
@@ -120,7 +121,7 @@ class SqlRepository<T : Comparable<T>,
             tree = dbTree
         }
 
-    private fun DBNode.deserialize(parent: NodeType? = null): NodeType {
+    private fun DBNode.deserialize(parent: N? = null): N {
         val node = strategy.createNode(data)
         strategy.processMetadata(node, metadata)
 

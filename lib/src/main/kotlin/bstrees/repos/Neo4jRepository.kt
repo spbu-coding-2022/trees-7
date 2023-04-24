@@ -50,29 +50,29 @@ private class GraphTree(
  * Saves binary search trees in neo4j database.
  * Acts like associative array with trees' names as keys and trees as values.
  *
- * Must be provided with [strategy] so repository knows how to work with specific [TreeType].
+ * Must be provided with [strategy] so repository knows how to work with specific [T].
  *
  * Different tree types can be saved in the same database
  * by creating several Neo4jRepositories with same neo4jConfig.
- * Note that saving trees with same tree type but different data type [T]
+ * Note that saving trees with same tree type but different data type [E]
  * in the same database is error-prone and is not advised.
  */
-class Neo4jRepository<T : Comparable<T>,
-        NodeType : TreeNode<T, NodeType>,
-        TreeType : BinarySearchTree<T, NodeType>>(
-    private val strategy: SerializationStrategy<T, NodeType, TreeType>, neo4jConfig: Configuration
-) : TreeRepository<TreeType> {
+class Neo4jRepository<E : Comparable<E>,
+        N : TreeNode<E, N>,
+        T : BinarySearchTree<E, N>>(
+    private val strategy: SerializationStrategy<E, N, T>, neo4jConfig: Configuration
+) : TreeRepository<T> {
     private val session = SessionFactory(neo4jConfig, "bstrees.repos").openSession()
     private val bstType = strategy.bstType.toString()
 
-    override fun getNames(): List<String> =
-        session.loadAll(
+    override val names: List<String>
+        get() = session.loadAll(
             GraphTree::class.java,
             Filter("type", ComparisonOperator.EQUALS, bstType),
             0
         ).map(GraphTree::name)
 
-    override fun get(treeName: String): TreeType? =
+    override fun get(treeName: String): T? =
         session.loadAll(
             GraphTree::class.java,
             Filter("type", ComparisonOperator.EQUALS, bstType).and(
@@ -85,7 +85,7 @@ class Neo4jRepository<T : Comparable<T>,
             }
         }
 
-    override fun set(treeName: String, tree: TreeType): Unit {
+    override fun set(treeName: String, tree: T): Unit {
         remove(treeName) // remove first if already exists
 
         session.save(
@@ -104,14 +104,14 @@ class Neo4jRepository<T : Comparable<T>,
         ).queryStatistics().containsUpdates()
 
 
-    private fun NodeType.toGraphNode(): GraphNode = GraphNode(
+    private fun N.toGraphNode(): GraphNode = GraphNode(
         data = strategy.collectData(this),
         metadata = strategy.collectMetadata(this),
         left = left?.toGraphNode(),
         right = right?.toGraphNode()
     )
 
-    private fun GraphNode.deserialize(parent: NodeType? = null): NodeType {
+    private fun GraphNode.deserialize(parent: N? = null): N {
         val node = strategy.createNode(data)
         strategy.processMetadata(node, metadata)
 

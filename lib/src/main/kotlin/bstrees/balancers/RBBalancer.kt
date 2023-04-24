@@ -2,26 +2,26 @@ package bstrees.balancers
 
 import bstrees.nodes.RBNode
 
-internal class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>>() {
-    private fun getColor(node: RBNode<T>?) = node?.color ?: RBNode.Color.Black
+internal class RBBalancer<E : Comparable<E>> : TreeBalancer<E, RBNode<E>>() {
+    private fun getColor(node: RBNode<E>?) = node?.color ?: RBNode.Color.Black
 
-    private fun isRed(node: RBNode<T>?) = getColor(node) == RBNode.Color.Red
+    private fun isRed(node: RBNode<E>?) = getColor(node) == RBNode.Color.Red
 
-    private fun isBlack(node: RBNode<T>?) = !isRed(node)
+    private fun isBlack(node: RBNode<E>?) = !isRed(node)
 
-    private fun getSibling(node: RBNode<T>): RBNode<T>? {
+    private fun getSibling(node: RBNode<E>): RBNode<E>? {
         val parent = node.parent ?: return null
         return if (parent.left == node) parent.right
         else parent.left
     }
 
-    private fun getUncle(node: RBNode<T>): RBNode<T>? {
+    private fun getUncle(node: RBNode<E>): RBNode<E>? {
         val parent = node.parent ?: return null
         return getSibling(parent)
     }
 
     /** Accepts the inserted node. Returns new tree root */
-    override fun balanceAfterInsertion(node: RBNode<T>): RBNode<T> {
+    override fun balanceAfterInsertion(node: RBNode<E>): RBNode<E> {
         var currentNode = node
 
         while (currentNode.parent != null && isRed(currentNode.parent)) {
@@ -72,7 +72,7 @@ internal class RBBalancer<T : Comparable<T>> : TreeBalancer<T, RBNode<T>>() {
      *
      * Doesn't itself delete [node]. Caller must delete the node on their own
      */
-    override fun balanceAfterDeletion(node: RBNode<T>): RBNode<T> {
+    override fun balanceAfterDeletion(node: RBNode<E>): RBNode<E> {
         var currentNode = node
         while (currentNode.parent != null && isBlack(currentNode)) {
             val parent = currentNode.parent

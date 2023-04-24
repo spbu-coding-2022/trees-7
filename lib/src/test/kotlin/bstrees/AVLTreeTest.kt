@@ -1,5 +1,6 @@
 package bstrees
 
+import bstrees.nodes.AVLNode
 import bstrees.nodes.TreeNode
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -22,9 +23,9 @@ class AVLTreeTest {
 
     private lateinit var tree: AVLTree<Int>
 
-    private fun checkAVLInvariant(tree: BinarySearchTree<*, *>): Boolean {
+    private fun checkAVLInvariant(tree: AVLTree<*>): Boolean {
         /** Returns height of [node] or null if tree is not balanced */
-        fun isBalanced(node: TreeNode<*, *>?): Int? {
+        fun isBalanced(node: AVLNode<*>?): Int? {
             if (node == null) return 0
 
             val leftHeight = isBalanced(node.left) ?: return null

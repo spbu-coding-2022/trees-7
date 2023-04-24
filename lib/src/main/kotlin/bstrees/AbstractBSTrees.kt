@@ -3,15 +3,15 @@ package bstrees
 import bstrees.nodes.TreeNode
 import bstrees.balancers.TreeBalancer
 
-abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeType>> {
-    var root: NodeType? = null
+abstract class BinarySearchTree<E : Comparable<E>, N : TreeNode<E, N>> {
+    var root: N? = null
         internal set
 
     /** Searches [data] in the tree. Returns it if found */
-    fun search(data: T): T? = searchNode(data)?.data
+    fun search(data: E): E? = searchNode(data)?.data
 
     /** Searches for node and returns it as a result (or null) */
-    protected fun searchNode(data: T): NodeType? {
+    protected fun searchNode(data: E): N? {
         var currentNode = root
         while (currentNode != null) {
             val res = data.compareTo(currentNode.data)
@@ -25,18 +25,18 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
     }
 
     /** Inserts new node in the tree with [data] as its value */
-    open fun insert(data: T) {
+    open fun insert(data: E) {
         insertNode(data)
     }
 
-    protected abstract fun createNewNode(data: T): NodeType
+    protected abstract fun createNewNode(data: E): N
 
     /**
      * Does simple insert and returns inserted node.
      * Returns null and overwrites the data if a node with that data already exists.
      * Uses [createNewNode] to create new node to insert
      */
-    protected fun insertNode(data: T): NodeType? {
+    protected fun insertNode(data: E): N? {
         if (root == null) {
             val createdNode = createNewNode(data)
             root = createdNode
@@ -73,7 +73,7 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
     }
 
     /** Deletes node with [data] as its value. Returns deleted data */
-    open fun delete(data: T): T? {
+    open fun delete(data: E): E? {
         val node = searchNode(data) ?: return null
         val dataToDelete = node.data
 
@@ -87,7 +87,7 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
      * Note that returned node is not always the same as [node].
      * Returned node can have different data than [node]
      */
-    protected fun deleteNode(node: NodeType): NodeType {
+    protected fun deleteNode(node: N): N {
         return when {
             node.left == null && node.right == null ->
                 deleteLeafNode(node)
@@ -100,7 +100,7 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
     }
 
     /** Replaces the child of the parent of the [wasChild] to [newChild] */
-    protected fun replaceChild(wasChild: NodeType, newChild: NodeType?) {
+    protected fun replaceChild(wasChild: N, newChild: N?) {
         val parent = wasChild.parent
         if (parent == null) {
             root = newChild
@@ -114,7 +114,7 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
     }
 
     /** Searches for node's in-order predecessor */
-    protected fun findPredecessor(node: NodeType): NodeType {
+    protected fun findPredecessor(node: N): N {
         var nodeToReplaceWith = node.left
             ?: throw IllegalStateException("node must have two children")
         while (nodeToReplaceWith.right != null) {
@@ -125,13 +125,13 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
     }
 
     /** The node to be deleted is a leaf node. Returns deleted node */
-    private fun deleteLeafNode(node: NodeType): NodeType {
+    private fun deleteLeafNode(node: N): N {
         replaceChild(node, null)
         return node
     }
 
     /** The node to be deleted has only one child. Returns deleted node */
-    private fun deleteNodeWithOneChild(node: NodeType): NodeType {
+    private fun deleteNodeWithOneChild(node: N): N {
         val nodeToReplaceWith = if (node.left == null) node.right else node.left
         replaceChild(node, nodeToReplaceWith)
         return node
@@ -142,8 +142,8 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
      * The node to be deleted has two children.
      * Returns node that was actually deleted
      */
-    private fun deleteNodeWithTwoChildren(node: NodeType): NodeType {
-        val nodePredecessor =  findPredecessor(node)
+    private fun deleteNodeWithTwoChildren(node: N): N {
+        val nodePredecessor = findPredecessor(node)
         // replace data and delete predecessor
         node.data = nodePredecessor.data
         return deleteNode(nodePredecessor)
@@ -151,7 +151,7 @@ abstract class BinarySearchTree<T : Comparable<T>, NodeType : TreeNode<T, NodeTy
 
 }
 
-abstract class SelfBalancingBST<T : Comparable<T>, NodeType : TreeNode<T, NodeType>> :
-    BinarySearchTree<T, NodeType>() {
-    internal abstract val balancer: TreeBalancer<T, NodeType>
+abstract class SelfBalancingBST<E : Comparable<E>, N : TreeNode<E, N>> :
+    BinarySearchTree<E, N>() {
+    internal abstract val balancer: TreeBalancer<E, N>
 }

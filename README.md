@@ -84,10 +84,10 @@ val tree2 = AVLTree<Int>().apply {
 
 avlIntRepo["my tree"] = tree1
 avlIntRepo["another tree"] = tree2
-avlIntRepo.getNames() // returns ["my tree", "another tree"]
+avlIntRepo.names // returns ["my tree", "another tree"]
 
 avlIntRepo.remove("my tree") // returns true
-avlIntRepo.getNames() // returns ["another tree"]
+avlIntRepo.names // returns ["another tree"]
 
 val restored = avlIntRepo["another tree"] // 'restored' & 'tree2' are the same trees
 ```
