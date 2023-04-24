@@ -3,16 +3,16 @@ package bstrees
 import bstrees.nodes.AVLNode
 import bstrees.balancers.AVLBalancer
 
-class AVLTree<T : Comparable<T>> : SelfBalancingBST<T, AVLNode<T>>() {
-    override fun createNewNode(data: T) = AVLNode(data)
-    override val balancer = AVLBalancer<T>()
+class AVLTree<E : Comparable<E>> : SelfBalancingBST<E, AVLNode<E>>() {
+    override fun createNewNode(data: E) = AVLNode(data)
+    override val balancer = AVLBalancer<E>()
 
-    override fun insert(data: T) {
+    override fun insert(data: E) {
         val insertedNode = insertNode(data) ?: return
         root = balancer.balanceAfterInsertion(insertedNode)
     }
 
-    override fun delete(data: T): T? {
+    override fun delete(data: E): E? {
         val node = searchNode(data) ?: return null
         val dataToDelete = node.data
 

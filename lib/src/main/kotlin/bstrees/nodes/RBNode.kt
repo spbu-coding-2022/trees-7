@@ -1,6 +1,6 @@
 package bstrees.nodes
 
-class RBNode<T : Comparable<T>>(data: T) : TreeNode<T, RBNode<T>>(data) {
+class RBNode<E : Comparable<E>>(data: E) : TreeNode<E, RBNode<E>>(data) {
     enum class Color {
         Red,
         Black

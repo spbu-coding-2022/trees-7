@@ -2,10 +2,10 @@ package bstrees
 
 import bstrees.nodes.TreeNode
 
-fun <T : Comparable<T>, NodeType : TreeNode<T, NodeType>> traverseInOrder(tree: BinarySearchTree<T, NodeType>): List<T> {
-    val treeList = mutableListOf<T>()
+fun <E : Comparable<E>, N : TreeNode<E, N>> traverseInOrder(tree: BinarySearchTree<E, N>): List<E> {
+    val treeList = mutableListOf<E>()
 
-    fun helper(node: NodeType?) {
+    fun helper(node: N?) {
         node?.let {
             helper(it.left)
             treeList.add(it.data)
@@ -18,7 +18,7 @@ fun <T : Comparable<T>, NodeType : TreeNode<T, NodeType>> traverseInOrder(tree: 
     return treeList
 }
 
-fun <T : Comparable<T>, NodeType : TreeNode<T, NodeType>> checkBSTInvariant(tree: BinarySearchTree<T, NodeType>): Boolean {
+fun <E : Comparable<E>, N : TreeNode<E, N>> checkBSTInvariant(tree: BinarySearchTree<E, N>): Boolean {
     val treeList = traverseInOrder(tree)
 
     for (i in 1 until treeList.size)

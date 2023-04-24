@@ -5,18 +5,18 @@ import bstrees.balancers.RBBalancer
 import bstrees.nodes.RBNode.Color.Red
 import bstrees.nodes.RBNode.Color.Black
 
-class RBTree<T : Comparable<T>> : SelfBalancingBST<T, RBNode<T>>() {
-    override fun createNewNode(data: T) = RBNode(data)
-    override val balancer = RBBalancer<T>()
+class RBTree<E : Comparable<E>> : SelfBalancingBST<E, RBNode<E>>() {
+    override fun createNewNode(data: E) = RBNode(data)
+    override val balancer = RBBalancer<E>()
 
-    override fun insert(data: T) {
+    override fun insert(data: E) {
         // insert like in SimpleBST and paint the new Node red
         val currentNode = insertNode(data) ?: return
         currentNode.color = Red
         root = balancer.balanceAfterInsertion(currentNode)
     }
 
-    override fun delete(data: T): T? {
+    override fun delete(data: E): E? {
         val foundNode = searchNode(data) ?: return null
         val result = foundNode.data
 

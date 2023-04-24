@@ -30,18 +30,18 @@ private data class JsonTree(
  * Saves binary search trees as .json files in provided [dirPath].
  * Acts like associative array with trees' names as keys and trees as values.
  *
- * Must be provided with [strategy] so repository knows how to work with specific [TreeType].
+ * Must be provided with [strategy] so repository knows how to work with specific [T].
  *
  * Different tree types can be saved in the same [dirPath]
  * by creating several JsonRepositories with same [dirPath].
- * Note that saving trees with same tree type but different data type [T]
+ * Note that saving trees with same tree type but different data type [E]
  * in the same [dirPath] is error-prone and is not advised.
  */
-class JsonRepository<T : Comparable<T>,
-        NodeType : TreeNode<T, NodeType>,
-        TreeType : BinarySearchTree<T, NodeType>>(
-    private val strategy: SerializationStrategy<T, NodeType, TreeType>, dirPath: String
-) : TreeRepository<TreeType> {
+class JsonRepository<E : Comparable<E>,
+        N : TreeNode<E, N>,
+        T : BinarySearchTree<E, N>>(
+    private val strategy: SerializationStrategy<E, N, T>, dirPath: String
+) : TreeRepository<T> {
     private val dirPath = "$dirPath/${strategy.bstType.toString().lowercase()}"
 
     // uses hash codes of trees' names as filenames
@@ -52,7 +52,7 @@ class JsonRepository<T : Comparable<T>,
             Json.decodeFromString<JsonTree>(it.readText()).name
         } ?: listOf()
 
-    override fun get(treeName: String): TreeType? {
+    override fun get(treeName: String): T? {
         val json = try {
             File(dirPath, "${treeName.hashCode()}.json").readText()
         } catch (_: FileNotFoundException) {
@@ -65,7 +65,7 @@ class JsonRepository<T : Comparable<T>,
         }
     }
 
-    override fun set(treeName: String, tree: TreeType) {
+    override fun set(treeName: String, tree: T) {
         val jsonTree = JsonTree(treeName, tree.root?.toJsonNode())
 
         File(dirPath).mkdirs()
@@ -79,14 +79,14 @@ class JsonRepository<T : Comparable<T>,
         File(dirPath, "${treeName.hashCode()}.json").delete()
 
 
-    private fun NodeType.toJsonNode(): JsonNode = JsonNode(
+    private fun N.toJsonNode(): JsonNode = JsonNode(
         data = strategy.collectData(this),
         metadata = strategy.collectMetadata(this),
         left = left?.toJsonNode(),
         right = right?.toJsonNode()
     )
 
-    private fun JsonNode.deserialize(parent: NodeType? = null): NodeType {
+    private fun JsonNode.deserialize(parent: N? = null): N {
         val node = strategy.createNode(data)
         strategy.processMetadata(node, metadata)
 

@@ -1,5 +1,5 @@
 package bstrees.nodes
 
-class AVLNode<T : Comparable<T>>(data: T) : TreeNode<T, AVLNode<T>>(data) {
+class AVLNode<E : Comparable<E>>(data: E) : TreeNode<E, AVLNode<E>>(data) {
     internal var height = 1
 }

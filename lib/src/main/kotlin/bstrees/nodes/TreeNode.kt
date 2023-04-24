@@ -1,12 +1,12 @@
 package bstrees.nodes
 
-abstract class TreeNode<T : Comparable<T>, NodeType : TreeNode<T, NodeType>>(data: T) {
-    var data: T = data
+abstract class TreeNode<E : Comparable<E>, N : TreeNode<E, N>>(data: E) {
+    var data: E = data
         internal set
 
-    internal var parent: NodeType? = null
-    var left: NodeType? = null
+    internal var parent: N? = null
+    var left: N? = null
         internal set
-    var right: NodeType? = null
+    var right: N? = null
         internal set
 }

@@ -21,16 +21,16 @@ class RBTreeTest {
 
     private lateinit var tree: RBTree<Int>
 
-    private fun <T : Comparable<T>> getColor(node: RBNode<T>?) = node?.color ?: RBNode.Color.Black
+    private fun <E : Comparable<E>> getColor(node: RBNode<E>?) = node?.color ?: RBNode.Color.Black
 
-    private fun <T : Comparable<T>> isRed(node: RBNode<T>?) = getColor(node) == RBNode.Color.Red
+    private fun <E : Comparable<E>> isRed(node: RBNode<E>?) = getColor(node) == RBNode.Color.Red
 
-    private fun <T : Comparable<T>> isBlack(node: RBNode<T>?) = !isRed(node)
+    private fun <E : Comparable<E>> isBlack(node: RBNode<E>?) = !isRed(node)
 
-    private fun <T : Comparable<T>> checkRBInvariant(tree: RBTree<T>): Boolean {
-        val blackHeights = HashMap<RBNode<T>, Int>()
+    private fun <E : Comparable<E>> checkRBInvariant(tree: RBTree<E>): Boolean {
+        val blackHeights = HashMap<RBNode<E>, Int>()
 
-        fun checkRBRecursively(node: RBNode<T>?): Boolean {
+        fun checkRBRecursively(node: RBNode<E>?): Boolean {
             node?.let {
                 val leftResult = checkRBRecursively(it.left)
                 val leftBlackHeight = blackHeights[it.left] ?: 1
