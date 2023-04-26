@@ -1,13 +1,29 @@
 rootProject.name = "trees"
 include("lib")
+include("app")
+
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    }
+}
 
 dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        google()
+    }
+
     versionCatalogs {
         create("libs") {
             version("kotlin", "1.8.20")
             plugin("kotlin-jvm", "org.jetbrains.kotlin.jvm").versionRef("kotlin")
             plugin("kotlin-serialization", "org.jetbrains.kotlin.plugin.serialization").versionRef("kotlin")
             plugin("kotlin-noarg", "org.jetbrains.kotlin.plugin.noarg").versionRef("kotlin")
+
+            plugin("compose", "org.jetbrains.compose").version("1.4.0")
 
             library("kotlinx-serialization-json", "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 
