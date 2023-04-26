@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,9 +31,21 @@ fun main() {
             LocalDensity.current.run {
                 window.minimumSize = Dimension(350.dp.roundToPx(), 350.dp.roundToPx())
             }
-            Text("hello world")
 
-
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = Color(245, 245, 247))
+                    .padding(20.dp)
+            ) {
+                MaterialTheme(
+                    colorScheme = MaterialTheme.colorScheme.copy(
+                        surface = Color.White,
+                    )
+                ) {
+                    EditorScreen()
+                }
+            }
         }
     }
 }
