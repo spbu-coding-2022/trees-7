@@ -13,7 +13,7 @@ import kotlin.random.Random
 
 
 class EditorViewModel {
-    val nodeSize = 50.dp
+    val nodeSize = 60.dp
 
     private val tree = RBTree<Int>().apply {
         List(10) { Random.nextInt(100) }.forEach(::insert)

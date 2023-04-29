@@ -4,6 +4,7 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -20,6 +21,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import visualizer.commonui.defaultTextStyle
 
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -75,13 +77,17 @@ fun TreeGraph(
             modifier = Modifier.align(Alignment.TopEnd).padding(10.dp),
             onClick = { centerGraph(graphViewWidth) }
         ) {
-            Text("Reset view")
+            Text(
+                text = "Reset view",
+                color = MaterialTheme.colorScheme.primary,
+                style = defaultTextStyle
+            )
         }
     }
 }
 
 @Composable
-fun drawTree(
+private fun drawTree(
     node: ImDrawableNode?,
     parent: ImDrawableNode? = null,
     nodeSize: Dp,

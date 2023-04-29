@@ -17,8 +17,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import visualizer.commonui.defaultTextStyle
 import kotlin.math.roundToInt
 
 
@@ -26,7 +26,7 @@ import kotlin.math.roundToInt
 fun GraphNode(
     modifier: Modifier = Modifier,
     node: ImDrawableNode,
-    nodeSize: Dp = 50.dp,
+    nodeSize: Dp,
     onNodeDrag: (ImDrawableNode, DpOffset) -> Unit,
     sDragProvider: () -> Offset,
     sScaleProvider: () -> ScreenScale
@@ -89,7 +89,7 @@ fun NodeText(
     modifier: Modifier = Modifier,
     text: String,
     scaleProvider: () -> Float,
-    style: TextStyle = MaterialTheme.typography.bodyMedium,
+    style: TextStyle = defaultTextStyle,
 ) {
     val scale = scaleProvider()
     Text(
