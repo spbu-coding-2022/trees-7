@@ -1,4 +1,4 @@
-package visualizer.graph
+package visualizer.editor.graph
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

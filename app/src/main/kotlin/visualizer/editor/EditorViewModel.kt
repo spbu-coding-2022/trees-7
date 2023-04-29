@@ -1,4 +1,4 @@
-package visualizer.viewmodels
+package visualizer.editor
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,8 +7,8 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import bstrees.RBTree
 import bstrees.nodes.TreeNode
-import visualizer.graph.DrawableNode
-import visualizer.graph.ImDrawableNode
+import visualizer.editor.graph.DrawableNode
+import visualizer.editor.graph.ImDrawableNode
 import kotlin.random.Random
 
 

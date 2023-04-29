@@ -1,4 +1,4 @@
-package visualizer
+package visualizer.editor
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,8 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import visualizer.graph.TreeGraph
-import visualizer.viewmodels.EditorViewModel
+import visualizer.editor.graph.TreeGraph
 
 
 @Composable

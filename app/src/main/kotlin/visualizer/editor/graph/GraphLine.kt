@@ -1,4 +1,4 @@
-package visualizer.graph
+package visualizer.editor.graph
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize

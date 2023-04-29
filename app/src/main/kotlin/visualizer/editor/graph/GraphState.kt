@@ -1,4 +1,4 @@
-package visualizer.graph
+package visualizer.editor.graph
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.geometry.Offset

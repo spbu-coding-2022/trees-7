@@ -1,4 +1,4 @@
-package visualizer.graph
+package visualizer.editor.graph
 
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
