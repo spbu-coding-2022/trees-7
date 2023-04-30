@@ -5,6 +5,7 @@ import bstrees.BinarySearchTree
 import visualizer.NodeData
 import visualizer.TreeInfo
 import visualizer.menu.creator.CreatorScreen
+import visualizer.menu.creator.CreatorViewModel
 import visualizer.menu.loader.LoaderScreen
 import visualizer.menu.loader.LoaderViewModel
 import visualizer.menu.settings.SettingsScreen
@@ -30,6 +31,9 @@ fun Menu(
         )
 
         Screen.Creator -> CreatorScreen(
+            viewModel = CreatorViewModel(
+                onEditTree = onEditTree
+            ),
             onGoBack = { screenState = Screen.Loader }
         )
 

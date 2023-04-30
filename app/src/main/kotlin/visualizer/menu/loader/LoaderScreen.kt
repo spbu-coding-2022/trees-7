@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import visualizer.commonui.defaultHeight
 import visualizer.commonui.defaultTextStyle
+import visualizer.menu.LoadingView
 
 
 @Composable
@@ -25,7 +26,8 @@ fun LoaderScreen(
 
     val cScope = rememberCoroutineScope()
     when (val state = viewModel.state) {
-        LoaderState.Loading -> Loading()
+        LoaderState.Loading -> LoadingView()
+
         is LoaderState.Loaded ->
             Column {
                 var searchText by remember { mutableStateOf("") }
@@ -57,19 +59,6 @@ private fun NoTreesFound() {
         Text(
             modifier = Modifier.align(Alignment.Center),
             text = "No trees found.\nYou create a new one by clicking 'New tree' button",
-            textAlign = TextAlign.Center,
-            color = Color.Gray,
-            style = defaultTextStyle
-        )
-    }
-}
-
-@Composable
-private fun Loading() {
-    Box(Modifier.fillMaxSize()) {
-        Text(
-            modifier = Modifier.align(Alignment.Center),
-            text = "Loading..",
             textAlign = TextAlign.Center,
             color = Color.Gray,
             style = defaultTextStyle

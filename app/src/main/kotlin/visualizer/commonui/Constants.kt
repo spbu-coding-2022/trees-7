@@ -20,3 +20,5 @@ val defaultTextStyle: TextStyle
     get() = MaterialTheme.typography.bodyLarge.copy(color = Color.Black)
 
 val defaultBackgroundColor = Color(245, 245, 247)
+
+val defaultErrorColor = Color(204, 0, 0)

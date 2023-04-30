@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import visualizer.TreeInfo
-import visualizer.TreeType
 import visualizer.commonui.AppButton
 import visualizer.commonui.defaultHeight
 import visualizer.commonui.defaultTextStyle
