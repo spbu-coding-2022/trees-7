@@ -4,31 +4,29 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import bstrees.RBTree
+import bstrees.nodes.TreeNode
 import visualizer.NodeData
 import visualizer.TreeInfo
-import visualizer.TreeType
 import visualizer.editor.graph.TreeGraph
 
 
 @Composable
-fun EditorScreen() {
-    val tree = RBTree<NodeData>()
-
-    val viewModel = remember { EditorViewModel(tree) }
-
+fun <N : TreeNode<NodeData, N>> EditorScreen(
+    viewModel: EditorViewModel<N>,
+    treeInfo: TreeInfo,
+    onGoHome: () -> Unit
+) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         Column(modifier = Modifier.width(370.dp)) {
             Header(
-                tree = TreeInfo("Best tree in the world", TreeType.AVL),
+                treeInfo = treeInfo,
                 onSave = { viewModel.changeTree() },
                 onResetTree = {},
-                onGoHome = {}
+                onGoHome = onGoHome
             )
             Spacer(Modifier.height(40.dp))
             TreeControls(

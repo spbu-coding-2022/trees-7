@@ -5,9 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.DpOffset
 import bstrees.BinarySearchTree
-import bstrees.RBTree
 import bstrees.nodes.RBNode
 import bstrees.nodes.TreeNode
+import org.koin.core.component.KoinComponent
 import visualizer.NodeData
 import visualizer.editor.graph.DrawableNode
 import visualizer.editor.graph.ImDrawableNode
@@ -16,7 +16,7 @@ import kotlin.random.Random
 
 class EditorViewModel<N : TreeNode<NodeData, N>>(
     private val tree: BinarySearchTree<NodeData, N>,
-) {
+) : KoinComponent {
     // view model holds the state and provides UI with immutable version of it
     var drawableRoot: ImDrawableNode? by mutableStateOf(toDrawable(tree.root))
         private set
@@ -30,26 +30,17 @@ class EditorViewModel<N : TreeNode<NodeData, N>>(
         tree.insert(NodeData(rand.nextInt(100), "d"))
         tree.insert(NodeData(rand.nextInt(100), "e"))
 
-        // for now, it means that the whole graph will be recomposed :(
         drawableRoot = toDrawable(tree.root)
     }
 
-    fun dragNode(node: ImDrawableNode, dragAmount: DpOffset) {
-        (node as? DrawableNode)?.let {
-            node.x += dragAmount.x
-            node.y += dragAmount.y
-        }
-    }
-
-
-    private fun <N : TreeNode<NodeData, N>> toDrawable(root: N?): ImDrawableNode? {
+    private fun toDrawable(root: N?): ImDrawableNode? {
         if (root == null) {
             return null
         }
 
         val drawRoot = DrawableNode(root.data.key, root.data.value)
 
-        fun <N : TreeNode<NodeData, N>> calcCoordinates(
+        fun calcCoordinates(
             node: N,
             drawNode: DrawableNode,
             offsetX: Int,
@@ -82,5 +73,12 @@ class EditorViewModel<N : TreeNode<NodeData, N>>(
 
         calcCoordinates(root, drawRoot, 0, 0)
         return drawRoot
+    }
+
+    fun dragNode(node: ImDrawableNode, dragAmount: DpOffset) {
+        (node as? DrawableNode)?.let {
+            node.x += dragAmount.x
+            node.y += dragAmount.y
+        }
     }
 }

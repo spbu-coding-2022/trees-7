@@ -24,7 +24,7 @@ import visualizer.commonui.defaultTextStyle
 @Composable
 fun Header(
     modifier: Modifier = Modifier,
-    tree: TreeInfo,
+    treeInfo: TreeInfo,
     onSave: () -> Unit,
     onResetTree: () -> Unit,
     onGoHome: () -> Unit
@@ -33,7 +33,7 @@ fun Header(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        TreeInfoBar(tree = tree)
+        TreeInfoBar(tree = treeInfo)
         EditorControls(
             onSave = onSave,
             onResetTree = onResetTree,

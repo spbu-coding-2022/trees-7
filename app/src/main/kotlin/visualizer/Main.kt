@@ -30,6 +30,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import visualizer.commonui.defaultBackgroundColor
 import visualizer.editor.EditorScreen
+import visualizer.editor.EditorViewModel
 import visualizer.menu.Menu
 import java.awt.Dimension
 
@@ -93,7 +94,13 @@ fun main() {
                             }
                         )
 
-                        is Screen.Editor -> EditorScreen()
+                        is Screen.Editor -> EditorScreen(
+                            viewModel = EditorViewModel(
+                                tree = screen.tree
+                            ),
+                            treeInfo = screen.treeInfo,
+                            onGoHome = { screenState = Screen.Menu }
+                        )
                     }
                 }
             }
