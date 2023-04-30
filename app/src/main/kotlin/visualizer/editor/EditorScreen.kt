@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import bstrees.RBTree
+import visualizer.NodeData
 import visualizer.TreeInfo
 import visualizer.TreeType
 import visualizer.editor.graph.TreeGraph
@@ -14,7 +16,9 @@ import visualizer.editor.graph.TreeGraph
 
 @Composable
 fun EditorScreen() {
-    val viewModel = remember { EditorViewModel() }
+    val tree = RBTree<NodeData>()
+
+    val viewModel = remember { EditorViewModel(tree) }
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(20.dp)

@@ -18,3 +18,5 @@ val defaultHeight = 65.dp
 val defaultTextStyle: TextStyle
     @Composable
     get() = MaterialTheme.typography.bodyLarge.copy(color = Color.Black)
+
+val defaultBackgroundColor = Color(245, 245, 247)

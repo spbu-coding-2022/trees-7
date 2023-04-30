@@ -28,6 +28,7 @@ import bstrees.repos.strategies.SimpleStrategy
 import org.koin.core.context.startKoin
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import visualizer.commonui.defaultBackgroundColor
 import visualizer.editor.EditorScreen
 import visualizer.menu.Menu
 import java.awt.Dimension
@@ -76,7 +77,7 @@ fun main() {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(color = Color(245, 245, 247))
+                    .background(color = defaultBackgroundColor)
                     .padding(30.dp)
             ) {
                 MaterialTheme(

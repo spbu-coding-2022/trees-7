@@ -77,7 +77,7 @@ fun GraphNode(
     ) {
         NodeText(
             modifier = Modifier.align(Alignment.Center),
-            text = node.data,
+            text = node.key.toString(),
             scaleProvider = { sScaleProvider().scale }
         )
     }
@@ -94,7 +94,7 @@ fun NodeText(
     val scale = scaleProvider()
     Text(
         modifier = modifier,
-        text = text,
+        text = if (text.length > 6) text.substring(0, 6) + ".." else text,
         color = MaterialTheme.colorScheme.onPrimary,
         style = style.copy(
             fontSize = style.fontSize * scale,
