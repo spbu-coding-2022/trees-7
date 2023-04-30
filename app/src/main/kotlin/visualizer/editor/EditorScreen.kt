@@ -1,16 +1,14 @@
 package visualizer.editor
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import visualizer.TreeInfo
+import visualizer.TreeType
 import visualizer.editor.graph.TreeGraph
 
 
@@ -18,7 +16,24 @@ import visualizer.editor.graph.TreeGraph
 fun EditorScreen() {
     val viewModel = remember { EditorViewModel() }
 
-    Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(20.dp)
+    ) {
+        Column(modifier = Modifier.width(370.dp)) {
+            Header(
+                tree = TreeInfo("Best tree in the world", TreeType.AVL),
+                onSave = { viewModel.changeTree() },
+                onResetTree = {},
+                onGoHome = {}
+            )
+            Spacer(Modifier.height(40.dp))
+            TreeControls(
+                onInsert = { _, _ -> },
+                onDelete = {},
+                onSearch = {}
+            )
+        }
+
         Surface(
             modifier = Modifier.fillMaxSize().weight(1f),
             shape = MaterialTheme.shapes.medium,
@@ -27,12 +42,6 @@ fun EditorScreen() {
             viewModel.drawableRoot?.let {
                 TreeGraph(it, defaultNodeSize, viewModel::dragNode)
             }
-        }
-
-        Button(
-            onClick = viewModel::changeTree
-        ) {
-            Text("Update")
         }
     }
 }

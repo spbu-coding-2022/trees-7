@@ -66,11 +66,11 @@ fun main() {
             title = "graph",
             state = rememberWindowState(
                 position = WindowPosition(alignment = Alignment.Center),
-                size = DpSize(1000.dp, 700.dp)
+                size = DpSize(1100.dp, 700.dp)
             ),
         ) {
             LocalDensity.current.run {
-                window.minimumSize = Dimension(500.dp.roundToPx(), 350.dp.roundToPx())
+                window.minimumSize = Dimension(550.dp.roundToPx(), 350.dp.roundToPx())
             }
 
             Box(

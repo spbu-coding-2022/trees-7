@@ -13,15 +13,18 @@ import androidx.compose.ui.graphics.Color
 fun AppButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    enabled: Boolean = true,
     contentPadding: PaddingValues = PaddingValues(defaultHPadding, defaultVPadding),
     content: @Composable RowScope.() -> Unit
 ) {
     Button(
         modifier = modifier,
         onClick = onClick,
+        enabled = enabled,
         shape = MaterialTheme.shapes.medium,
         colors = ButtonDefaults.outlinedButtonColors(
             containerColor = Color.White,
+            disabledContainerColor = Color.White
         ),
         elevation = null,
         contentPadding = contentPadding,
