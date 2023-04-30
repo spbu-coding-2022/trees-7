@@ -29,7 +29,10 @@ fun Menu(
             onSettings = { screenState = Screen.Settings }
         )
 
-        Screen.Creator -> CreatorScreen()
+        Screen.Creator -> CreatorScreen(
+            onGoBack = { screenState = Screen.Loader }
+        )
+
         Screen.Settings -> SettingsScreen()
     }
 }
