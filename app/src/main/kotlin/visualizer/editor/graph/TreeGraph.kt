@@ -7,8 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -42,7 +41,8 @@ fun TreeGraph(
         }
     }
 
-    var graphViewWidth = 0
+    var graphViewWidth by remember { mutableStateOf(0) }
+    var isFirstComposition by remember { mutableStateOf(true) }
     Box(modifier = Modifier
         .fillMaxSize()
         .onPointerEvent(PointerEventType.Scroll) {
@@ -61,17 +61,20 @@ fun TreeGraph(
             graphViewWidth = it.width
         }
     ) {
-        LaunchedEffect(Unit) { // center graph only once on first composition
-            centerGraph(graphViewWidth)
-        }
+        if (graphViewWidth > 0) { // graphViewWidth is not known before first layout phase
+            if (isFirstComposition) { // center graph only once on first composition
+                centerGraph(graphViewWidth)
+                isFirstComposition = false
+            }
 
-        drawTree(
-            node = root,
-            nodeSize = nodeSize,
-            onNodeDrag = onNodeDrag,
-            sDragProvider = { graphState.screenDrag }, // 's' means 'screen'
-            sScaleProvider = { graphState.screenScale }
-        )
+            drawTree(
+                node = root,
+                nodeSize = nodeSize,
+                onNodeDrag = onNodeDrag,
+                sDragProvider = { graphState.screenDrag }, // 's' means 'screen'
+                sScaleProvider = { graphState.screenScale }
+            )
+        }
 
         TextButton(
             modifier = Modifier.align(Alignment.TopEnd).padding(10.dp),
