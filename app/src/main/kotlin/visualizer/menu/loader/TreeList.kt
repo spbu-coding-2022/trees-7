@@ -16,12 +16,18 @@ import visualizer.commonui.defaultTextStyle
 
 
 @Composable
-fun TreeList(modifier: Modifier = Modifier, trees: List<TreeCardData>) {
+fun TreeList(
+    modifier: Modifier = Modifier,
+    trees: List<TreeCardData>,
+    searchedText: String
+) {
     LazyColumn(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        items(trees) {
+        items(trees.filter {
+            it.name.contains(searchedText, ignoreCase = true)
+        }) {
             TreeCard(
                 modifier = Modifier.fillMaxWidth().height(defaultHeight),
                 tree = it

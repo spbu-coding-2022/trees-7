@@ -6,7 +6,7 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -14,9 +14,12 @@ import visualizer.commonui.AppButton
 import visualizer.commonui.AppTextField
 import visualizer.commonui.defaultTextStyle
 
+
 @Composable
 fun Header(
     modifier: Modifier = Modifier,
+    searchTextProvider: () -> String,
+    onSearchTextChange: (String) -> Unit,
     onNewTree: () -> Unit,
     onSettings: () -> Unit
 ) {
@@ -24,19 +27,26 @@ fun Header(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        SearchBar(Modifier.fillMaxHeight().weight(1f))
+        SearchBar(
+            modifier = Modifier.fillMaxHeight().weight(1f),
+            searchTextProvider = searchTextProvider,
+            onSearchTextChange = onSearchTextChange
+        )
         NewTreeButton(modifier = Modifier.fillMaxHeight(), onClick = onNewTree)
         SettingsButton(modifier = Modifier.fillMaxHeight(), onClick = onSettings)
     }
 }
 
 @Composable
-private fun SearchBar(modifier: Modifier = Modifier) {
-    var text by remember { mutableStateOf("") }
+private fun SearchBar(
+    modifier: Modifier = Modifier,
+    searchTextProvider: () -> String,
+    onSearchTextChange: (String) -> Unit
+) {
     AppTextField(
         modifier = modifier,
-        value = text,
-        onValueChange = { text = it },
+        value = searchTextProvider(),
+        onValueChange = onSearchTextChange,
         placeholderText = "Enter tree name to search for"
     )
 }
