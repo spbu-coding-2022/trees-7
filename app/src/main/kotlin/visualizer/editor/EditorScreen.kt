@@ -25,7 +25,7 @@ fun EditorScreen() {
             color = MaterialTheme.colorScheme.surface
         ) {
             viewModel.drawableRoot?.let {
-                TreeGraph(it, viewModel.nodeSize, viewModel::dragNode)
+                TreeGraph(it, defaultNodeSize, viewModel::dragNode)
             }
         }
 

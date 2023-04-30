@@ -15,9 +15,8 @@ class NodeData(
         "key=$key value=$value\nx=$x y=$y"
 
     companion object {
-        fun serialize(data: NodeData): String {
-            return "${data.x?.value};${data.y?.value};${data.key};${data.value}"
-        }
+        fun serialize(data: NodeData): String =
+            "${data.x?.value};${data.y?.value};${data.key};${data.value}"
 
         fun deserialize(data: String): NodeData =
             data.split(";", limit = 4).let {

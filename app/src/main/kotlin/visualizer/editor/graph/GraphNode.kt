@@ -57,7 +57,7 @@ fun GraphNode(
         }
 
         .background(
-            color = MaterialTheme.colorScheme.primary,
+            color = node.color ?: MaterialTheme.colorScheme.primary,
             shape = CircleShape
         )
         .pointerInput(node) {

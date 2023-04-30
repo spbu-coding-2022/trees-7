@@ -4,8 +4,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.dp
 import bstrees.RBTree
+import bstrees.nodes.RBNode
 import bstrees.nodes.TreeNode
 import visualizer.editor.graph.DrawableNode
 import visualizer.editor.graph.ImDrawableNode
@@ -13,8 +13,6 @@ import kotlin.random.Random
 
 
 class EditorViewModel {
-    val nodeSize = 60.dp
-
     private val tree = RBTree<Int>().apply {
         List(10) { Random.nextInt(100) }.forEach(::insert)
     }
@@ -63,8 +61,14 @@ class EditorViewModel {
                 }
             }
 
-            drawNode.x = (nodeSize * 2 / 3) * resX
-            drawNode.y = (nodeSize * 5 / 4) * curH
+            drawNode.x = (defaultNodeSize * 2 / 3) * resX
+            drawNode.y = (defaultNodeSize * 5 / 4) * curH
+            if (node is RBNode<*>) {
+                drawNode.color = when (node.color) {
+                    RBNode.Color.Red -> redNodeColor
+                    RBNode.Color.Black -> blackNodeColor
+                }
+            }
 
             node.right?.let { right ->
                 drawNode.right = DrawableNode(right.data.toString()).also { drawRight ->

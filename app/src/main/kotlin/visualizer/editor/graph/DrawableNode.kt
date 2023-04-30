@@ -3,6 +3,7 @@ package visualizer.editor.graph
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -12,6 +13,7 @@ interface ImDrawableNode {
     val data: String
     val left: ImDrawableNode?
     val right: ImDrawableNode?
+    val color: Color?
     val x: Dp
     val y: Dp
 }
@@ -20,6 +22,7 @@ class DrawableNode(
     override val data: String,
     override var left: DrawableNode? = null,
     override var right: DrawableNode? = null,
+    override var color: Color? = null,
     y: Dp = 0.dp,
     x: Dp = 0.dp,
 ) : ImDrawableNode {
