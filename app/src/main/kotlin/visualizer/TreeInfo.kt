@@ -1,7 +1,9 @@
 package visualizer
 
-enum class TreeType {
-    RB, AVL, Simple
+enum class TreeType(val displayName: String) {
+    RB(displayName = "Red-Black"),
+    AVL(displayName = "AVL"),
+    Simple(displayName = "Simple")
 }
 
 data class TreeInfo(

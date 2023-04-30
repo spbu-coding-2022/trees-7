@@ -60,11 +60,7 @@ private fun TreeCard(
         )
         Text(
             modifier = Modifier.padding(start = 20.dp),
-            text = when (tree.type) {
-                TreeType.RB -> "Red-Black"
-                TreeType.AVL -> "AVL"
-                TreeType.Simple -> "Simple"
-            },
+            text = tree.type.displayName,
             style = defaultTextStyle
         )
     }
