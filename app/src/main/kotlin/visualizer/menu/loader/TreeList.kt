@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import visualizer.TreeInfo
+import visualizer.TreeType
 import visualizer.commonui.AppButton
 import visualizer.commonui.defaultHeight
 import visualizer.commonui.defaultTextStyle
@@ -19,8 +21,9 @@ import visualizer.commonui.defaultTextStyle
 @Composable
 fun TreeList(
     modifier: Modifier = Modifier,
-    trees: List<TreeCardData>,
-    searchedText: String
+    trees: List<TreeInfo>,
+    searchedText: String,
+    onEditTree: (TreeInfo) -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
@@ -28,20 +31,25 @@ fun TreeList(
     ) {
         items(trees.filter {
             it.name.contains(searchedText, ignoreCase = true)
-        }) {
+        }) { tree ->
             TreeCard(
                 modifier = Modifier.fillMaxWidth().height(defaultHeight),
-                tree = it
+                tree = tree,
+                onClick = { onEditTree(tree) }
             )
         }
     }
 }
 
 @Composable
-private fun TreeCard(modifier: Modifier = Modifier, tree: TreeCardData) {
+private fun TreeCard(
+    modifier: Modifier = Modifier,
+    tree: TreeInfo,
+    onClick: () -> Unit
+) {
     AppButton(
         modifier = modifier,
-        onClick = {}
+        onClick = onClick
     ) {
         Text(
             modifier = Modifier.weight(1f),

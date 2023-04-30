@@ -19,28 +19,58 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import bstrees.BinarySearchTree
+import bstrees.repos.JsonRepository
+import bstrees.repos.TreeRepository
+import bstrees.repos.strategies.AVLStrategy
+import bstrees.repos.strategies.RBStrategy
+import bstrees.repos.strategies.SimpleStrategy
+import org.koin.core.context.startKoin
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
 import visualizer.editor.EditorScreen
-import visualizer.menu.MenuScreen
+import visualizer.menu.Menu
 import java.awt.Dimension
 
 
 private sealed class Screen {
     object Menu : Screen()
-    object Editor : Screen()
+
+    data class Editor(
+        val treeInfo: TreeInfo,
+        val tree: BinarySearchTree<NodeData, *>
+    ) : Screen()
 }
 
 fun main() {
+    // setup DI
+    val koinModule = module {
+        factory<TreeRepository<*>>(named("simpleRepo")) {
+            JsonRepository(SimpleStrategy(NodeData::serialize, NodeData::deserialize), "jj")
+        }
+
+        factory<TreeRepository<*>>(named("avlRepo")) {
+            JsonRepository(AVLStrategy(NodeData::serialize, NodeData::deserialize), "jj")
+        }
+
+        factory<TreeRepository<*>>(named("rbRepo")) {
+            JsonRepository(RBStrategy(NodeData::serialize, NodeData::deserialize), "jj")
+        }
+    }
+    startKoin { modules(koinModule) }
+
+    // start compose
     application {
         Window(
             onCloseRequest = ::exitApplication,
             title = "graph",
             state = rememberWindowState(
                 position = WindowPosition(alignment = Alignment.Center),
-                size = DpSize(700.dp, 700.dp)
+                size = DpSize(1000.dp, 700.dp)
             ),
         ) {
             LocalDensity.current.run {
-                window.minimumSize = Dimension(350.dp.roundToPx(), 350.dp.roundToPx())
+                window.minimumSize = Dimension(500.dp.roundToPx(), 350.dp.roundToPx())
             }
 
             Box(
@@ -56,8 +86,13 @@ fun main() {
                 ) {
                     var screenState by remember { mutableStateOf<Screen>(Screen.Menu) }
                     when (val screen = screenState) {
-                        Screen.Menu -> MenuScreen()
-                        Screen.Editor -> EditorScreen()
+                        Screen.Menu -> Menu(
+                            onEditTree = { info, tree ->
+                                screenState = Screen.Editor(info, tree)
+                            }
+                        )
+
+                        is Screen.Editor -> EditorScreen()
                     }
                 }
             }

@@ -25,6 +25,8 @@ dependencyResolutionManagement {
 
             plugin("compose", "org.jetbrains.compose").version("1.4.0")
 
+            library("koin-core", "io.insert-koin:koin-core:3.4.0")
+
             library("kotlinx-serialization-json", "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 
             version("exposed", "0.41.1")
