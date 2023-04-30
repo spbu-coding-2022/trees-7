@@ -16,7 +16,7 @@ import visualizer.commonui.defaultTextStyle
 
 
 @Composable
-fun TreeList(modifier: Modifier = Modifier, trees: List<Tree>) {
+fun TreeList(modifier: Modifier = Modifier, trees: List<TreeCardData>) {
     LazyColumn(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(20.dp)
@@ -31,7 +31,7 @@ fun TreeList(modifier: Modifier = Modifier, trees: List<Tree>) {
 }
 
 @Composable
-private fun TreeCard(modifier: Modifier = Modifier, tree: Tree) {
+private fun TreeCard(modifier: Modifier = Modifier, tree: TreeCardData) {
     AppButton(
         modifier = modifier,
         onClick = {}

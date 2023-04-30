@@ -2,13 +2,13 @@ package visualizer.menu.loader
 
 class LoaderViewModel {
     val trees = listOf(
-        Tree("fav tree", TreeType.AVL),
-        Tree("best tree", TreeType.AVL),
-        Tree("some tree", TreeType.Simple),
-        Tree("some tree", TreeType.Simple),
-        Tree("some tree", TreeType.RB),
-        Tree("some tree", TreeType.Simple),
-        Tree("some tree", TreeType.Simple),
+        TreeCardData("fav tree", TreeType.AVL),
+        TreeCardData("best tree", TreeType.AVL),
+        TreeCardData("some tree", TreeType.Simple),
+        TreeCardData("some tree", TreeType.Simple),
+        TreeCardData("some tree", TreeType.RB),
+        TreeCardData("some tree", TreeType.Simple),
+        TreeCardData("some tree", TreeType.Simple),
     )
 
 }
