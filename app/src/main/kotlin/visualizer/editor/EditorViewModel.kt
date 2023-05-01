@@ -91,7 +91,7 @@ class EditorViewModel<N : TreeNode<NodeData, N>>(
         state = EditorState.Loaded(
             treeRoot = drawableRoot,
             status = EditorStatus(
-                msg = "Tree '$name' was successfully saved",
+                msg = "'$name' is successfully saved",
                 type = StatusType.Ok
             )
         )
@@ -105,7 +105,7 @@ class EditorViewModel<N : TreeNode<NodeData, N>>(
             state = EditorState.Loaded(
                 treeRoot = drawableRoot,
                 status = EditorStatus(
-                    msg = "$key with value '$value' already exists in the tree",
+                    msg = "$key with value '$value' is already in the tree",
                     type = StatusType.Fail
                 )
             )
@@ -137,7 +137,7 @@ class EditorViewModel<N : TreeNode<NodeData, N>>(
                     StatusType.Ok
                 )
             } ?: EditorStatus(
-                "$key doesn't exist in the tree",
+                "$key is not found in the tree",
                 StatusType.Fail
             )
 
@@ -160,7 +160,7 @@ class EditorViewModel<N : TreeNode<NodeData, N>>(
                     StatusType.Ok
                 )
             } ?: EditorStatus(
-                "$key doesn't exist in the tree",
+                "$key is not found in the tree",
                 StatusType.Fail
             )
 
