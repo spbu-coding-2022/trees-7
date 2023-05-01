@@ -20,11 +20,7 @@ import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import bstrees.BinarySearchTree
-import bstrees.repos.JsonRepository
 import bstrees.repos.TreeRepository
-import bstrees.repos.strategies.AVLStrategy
-import bstrees.repos.strategies.RBStrategy
-import bstrees.repos.strategies.SimpleStrategy
 import org.koin.core.context.startKoin
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -47,17 +43,9 @@ private sealed class Screen {
 fun main() {
     // setup DI
     val koinModule = module {
-        factory<TreeRepository<*>>(named("simpleRepo")) {
-            JsonRepository(SimpleStrategy(NodeData::serialize, NodeData::deserialize), "jj")
-        }
-
-        factory<TreeRepository<*>>(named("avlRepo")) {
-            JsonRepository(AVLStrategy(NodeData::serialize, NodeData::deserialize), "jj")
-        }
-
-        factory<TreeRepository<*>>(named("rbRepo")) {
-            JsonRepository(RBStrategy(NodeData::serialize, NodeData::deserialize), "jj")
-        }
+        factory<TreeRepository<*>>(named("simpleRepo")) { RepoFactory.getSimpleRepo() }
+        factory<TreeRepository<*>>(named("avlRepo")) { RepoFactory.getAVLRepo() }
+        factory<TreeRepository<*>>(named("rbRepo")) { RepoFactory.getRBRepo() }
     }
     startKoin { modules(koinModule) }
 
