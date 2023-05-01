@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.noarg)
     `java-library`
+    jacoco
 }
 
 repositories {
@@ -28,5 +29,20 @@ noArg {
 }
 
 tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
     useJUnitPlatform()
 }
+
+jacoco {
+    toolVersion = "0.8.8"
+    reportsDirectory.set(layout.buildDirectory.dir("coverage"))
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        csv.required.set(true)
+        csv.outputLocation.set(layout.buildDirectory.file("jacoco/report.csv"))
+    }
+}
+
