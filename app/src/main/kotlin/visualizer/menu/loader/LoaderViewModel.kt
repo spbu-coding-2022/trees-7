@@ -68,6 +68,7 @@ class LoaderViewModel(
         )
     }
 
+    /** Called when user decides to delete a tree */
     fun deleteTree(treeInfo: TreeInfo) {
         state = LoaderState.Loading
 

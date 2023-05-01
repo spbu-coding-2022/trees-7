@@ -42,7 +42,7 @@ fun TreeList(
                     tree = tree,
                     onClick = { onEditTree(tree) }
                 )
-                DeleteTree(
+                DeleteTreeButton(
                     modifier = Modifier.fillMaxHeight().aspectRatio(1f),
                     onClick = { onDeleteTree(tree) },
                 )
@@ -77,7 +77,7 @@ private fun TreeCard(
 }
 
 @Composable
-private fun DeleteTree(
+private fun DeleteTreeButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
