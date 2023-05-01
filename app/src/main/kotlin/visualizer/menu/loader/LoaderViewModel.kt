@@ -53,12 +53,18 @@ class LoaderViewModel(
     }
 
     /** Called when user decides to edit a tree */
-    fun editTree(tree: TreeInfo) {
+    fun editTree(treeInfo: TreeInfo) {
         state = LoaderState.Loading
-        when (tree.type) {
-            Simple -> onEditTree(tree, simpleRepo[tree.name] ?: throw IllegalStateException())
-            AVL -> onEditTree(tree, avlRepo[tree.name] ?: throw IllegalStateException())
-            RB -> onEditTree(tree, rbRepo[tree.name] ?: throw IllegalStateException())
-        }
+
+        onEditTree(
+            treeInfo,
+            when (treeInfo.type) {
+                Simple -> simpleRepo
+                AVL -> avlRepo
+                RB -> rbRepo
+            }[treeInfo.name] ?: throw IllegalStateException(
+                "Tree named '${treeInfo.name}' doesn't exist in database"
+            )
+        )
     }
 }

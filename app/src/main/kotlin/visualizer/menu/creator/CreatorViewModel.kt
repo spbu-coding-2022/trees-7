@@ -44,35 +44,25 @@ class CreatorViewModel(
         state = CreatorState.Loading
 
         when (treeInfo.type) {
-            Simple -> {
-                if (treeInfo.name in simpleRepo.names) state =
-                    CreatorState.Error("${treeInfo.type.displayName} tree with that name already exists")
-                else
-                    SimpleBST<NodeData>().let {
-                        simpleRepo[treeInfo.name] = it
-                        onEditTree(treeInfo, it)
-                    }
-            }
-
-            AVL -> {
-                if (treeInfo.name in avlRepo.names) state =
-                    CreatorState.Error("${treeInfo.type.displayName} tree with that name already exists")
-                else
-                    AVLTree<NodeData>().let {
-                        avlRepo[treeInfo.name] = it
-                        onEditTree(treeInfo, it)
-                    }
-            }
-
-            RB -> {
-                if (treeInfo.name in rbRepo.names) state =
-                    CreatorState.Error("${treeInfo.type.displayName} tree with that name already exists")
-                else
-                    RBTree<NodeData>().let {
-                        rbRepo[treeInfo.name] = it
-                        onEditTree(treeInfo, it)
-                    }
-            }
+            Simple -> createSaveTree(treeInfo, simpleRepo) { SimpleBST() }
+            AVL -> createSaveTree(treeInfo, avlRepo) { AVLTree() }
+            RB -> createSaveTree(treeInfo, rbRepo) { RBTree() }
         }
+    }
+
+    private fun <T : BinarySearchTree<NodeData, *>> createSaveTree(
+        treeInfo: TreeInfo,
+        repo: TreeRepository<T>,
+        treeCreator: () -> T
+    ) {
+        if (treeInfo.name in repo.names)
+            state = CreatorState.Error(
+                "${treeInfo.type.displayName} tree with that name already exists"
+            )
+        else
+            treeCreator().let {
+                repo[treeInfo.name] = it
+                onEditTree(treeInfo, it)
+            }
     }
 }

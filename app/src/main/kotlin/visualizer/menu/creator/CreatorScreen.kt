@@ -60,7 +60,9 @@ fun CreatorScreen(
                             viewModel.createTree(
                                 TreeInfo(
                                     treeName,
-                                    selectedTreeType ?: throw IllegalStateException()
+                                    selectedTreeType ?: throw IllegalStateException(
+                                        "Create button can't be clicked if user hasn't selected tree type"
+                                    )
                                 )
                             )
                         }
