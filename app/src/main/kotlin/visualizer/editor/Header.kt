@@ -114,7 +114,7 @@ private fun EditorControls(
             Icon(
                 imageVector = Icons.Outlined.Home,
                 contentDescription = "Go Home button",
-                tint = Color.LightGray
+                tint = Color.Gray
             )
         }
     }

@@ -75,7 +75,7 @@ private fun SettingsButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
         Icon(
             imageVector = Icons.Outlined.Settings,
             contentDescription = "Settings button",
-            tint = Color.LightGray
+            tint = Color.Gray
         )
     }
 }

@@ -11,9 +11,9 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import visualizer.LoadingView
 import visualizer.commonui.defaultHeight
 import visualizer.commonui.defaultTextStyle
-import visualizer.LoadingView
 
 
 /** Displays trees loaded from database. Lets user select a tree to edit */
@@ -51,7 +51,8 @@ fun LoaderScreen(
                     TreeList(
                         trees = state.trees,
                         searchedText = searchText,
-                        onEditTree = { cScope.launch { viewModel.editTree(it) } }
+                        onEditTree = { cScope.launch { viewModel.editTree(it) } },
+                        onDeleteTree = { cScope.launch { viewModel.deleteTree(it) } }
                     )
                 }
             }

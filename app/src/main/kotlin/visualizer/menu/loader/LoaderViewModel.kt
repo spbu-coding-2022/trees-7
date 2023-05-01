@@ -67,4 +67,20 @@ class LoaderViewModel(
             )
         )
     }
+
+    fun deleteTree(treeInfo: TreeInfo) {
+        state = LoaderState.Loading
+
+        val deletionResult = when (treeInfo.type) {
+            Simple -> simpleRepo
+            AVL -> avlRepo
+            RB -> rbRepo
+        }.remove(treeInfo.name)
+        if (!deletionResult) {
+            throw IllegalStateException("Failed to delete tree named '${treeInfo.name}'")
+        }
+        treeInfos.remove(treeInfo)
+
+        state = LoaderState.Loaded(treeInfos)
+    }
 }

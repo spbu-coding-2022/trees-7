@@ -1,14 +1,15 @@
 package visualizer.menu.loader
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import visualizer.TreeInfo
@@ -22,7 +23,8 @@ fun TreeList(
     modifier: Modifier = Modifier,
     trees: List<TreeInfo>,
     searchedText: String,
-    onEditTree: (TreeInfo) -> Unit
+    onEditTree: (TreeInfo) -> Unit,
+    onDeleteTree: (TreeInfo) -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
@@ -31,11 +33,20 @@ fun TreeList(
         items(trees.filter {
             it.name.contains(searchedText, ignoreCase = true)
         }) { tree ->
-            TreeCard(
-                modifier = Modifier.fillMaxWidth().height(defaultHeight),
-                tree = tree,
-                onClick = { onEditTree(tree) }
-            )
+            Row(
+                modifier = Modifier.height(defaultHeight).fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                TreeCard(
+                    modifier = Modifier.fillMaxHeight().weight(1f),
+                    tree = tree,
+                    onClick = { onEditTree(tree) }
+                )
+                DeleteTree(
+                    modifier = Modifier.fillMaxHeight().aspectRatio(1f),
+                    onClick = { onDeleteTree(tree) },
+                )
+            }
         }
     }
 }
@@ -58,9 +69,27 @@ private fun TreeCard(
             style = defaultTextStyle
         )
         Text(
-            modifier = Modifier.padding(start = 20.dp),
+            modifier = Modifier.padding(start = 20.dp), // for long tree names
             text = tree.type.displayName,
             style = defaultTextStyle
+        )
+    }
+}
+
+@Composable
+private fun DeleteTree(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    AppButton(
+        modifier = modifier,
+        onClick = onClick,
+        contentPadding = PaddingValues(0.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.Delete,
+            contentDescription = "Delete tree button",
+            tint = Color.Gray,
         )
     }
 }
