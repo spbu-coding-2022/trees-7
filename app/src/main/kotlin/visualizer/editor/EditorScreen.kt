@@ -34,6 +34,11 @@ fun <N : TreeNode<NodeData, N>> EditorScreen(
                 onDelete = {},
                 onSearch = {}
             )
+            Spacer(Modifier.weight(1f))
+            StatusBar(
+                statusText = "Everything's fine",
+                statusType = StatusType.Fail
+            )
         }
 
         Surface(
