@@ -26,9 +26,9 @@ import visualizer.commonui.defaultTextStyle
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TreeGraph(
-    root: ImDrawableNode,
+    root: DrawableNode,
     nodeSize: Dp,
-    onNodeDrag: (ImDrawableNode, DpOffset) -> Unit,
+    onNodeDrag: (DrawableNode, DpOffset) -> Unit,
     graphState: GraphState = rememberGraphState()
 ) {
     val currentDensity = LocalDensity.current
@@ -91,10 +91,10 @@ fun TreeGraph(
 
 @Composable
 private fun drawTree(
-    node: ImDrawableNode?,
-    parent: ImDrawableNode? = null,
+    node: DrawableNode?,
+    parent: DrawableNode? = null,
     nodeSize: Dp,
-    onNodeDrag: (ImDrawableNode, DpOffset) -> Unit,
+    onNodeDrag: (DrawableNode, DpOffset) -> Unit,
     sDragProvider: () -> Offset,
     sScaleProvider: () -> ScreenScale
 ) {

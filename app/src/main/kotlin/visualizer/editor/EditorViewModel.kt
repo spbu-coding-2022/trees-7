@@ -15,13 +15,13 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import visualizer.NodeData
+import visualizer.editor.graph.MutableDrawableNode
 import visualizer.editor.graph.DrawableNode
-import visualizer.editor.graph.ImDrawableNode
 
 
 sealed class EditorState {
     object Loading : EditorState()
-    data class Loaded(val treeRoot: ImDrawableNode?, val status: EditorStatus) : EditorState()
+    data class Loaded(val treeRoot: DrawableNode?, val status: EditorStatus) : EditorState()
 }
 
 class EditorViewModel<N : TreeNode<NodeData, N>>(
@@ -34,7 +34,7 @@ class EditorViewModel<N : TreeNode<NodeData, N>>(
     var state: EditorState by mutableStateOf(EditorState.Loading)
         private set
 
-    private var drawableRoot: ImDrawableNode? = null
+    private var drawableRoot: DrawableNode? = null
 
     /** Converts real tree to drawable one */
     fun initTree() {
@@ -62,7 +62,7 @@ class EditorViewModel<N : TreeNode<NodeData, N>>(
     fun saveTree(name: String) {
         state = EditorState.Loading
 
-        fun copyCoordinates(node: N?, drawableNode: ImDrawableNode?) {
+        fun copyCoordinates(node: N?, drawableNode: DrawableNode?) {
             if (node == null || drawableNode == null) {
                 return
             }
@@ -176,22 +176,22 @@ class EditorViewModel<N : TreeNode<NodeData, N>>(
      * If [respectXY] is set to true, function will respect coordinates stored in node's data.
      * Otherwise, they will be computed so tree is displayed properly
      */
-    private fun toDrawable(root: N?, respectXY: Boolean = false): ImDrawableNode? {
+    private fun toDrawable(root: N?, respectXY: Boolean = false): DrawableNode? {
         if (root == null) {
             return null
         }
 
-        val drawRoot = DrawableNode(root.data.key, root.data.value)
+        val drawRoot = MutableDrawableNode(root.data.key, root.data.value)
 
         fun calcCoordinates(
             node: N,
-            drawableNode: DrawableNode,
+            drawableNode: MutableDrawableNode,
             offsetX: Int,
             curH: Int,
         ): Int {
             var resX = offsetX
             node.left?.let { left ->
-                drawableNode.left = DrawableNode(left.data.key, left.data.value).also { drawLeft ->
+                drawableNode.left = MutableDrawableNode(left.data.key, left.data.value).also { drawLeft ->
                     resX = calcCoordinates(left, drawLeft, offsetX, curH + 1) + 1
                 }
             }
@@ -206,7 +206,7 @@ class EditorViewModel<N : TreeNode<NodeData, N>>(
             }
 
             node.right?.let { right ->
-                drawableNode.right = DrawableNode(right.data.key, right.data.value).also { drawRight ->
+                drawableNode.right = MutableDrawableNode(right.data.key, right.data.value).also { drawRight ->
                     resX = calcCoordinates(right, drawRight, resX + 1, curH + 1)
                 }
             }
@@ -218,8 +218,8 @@ class EditorViewModel<N : TreeNode<NodeData, N>>(
         return drawRoot
     }
 
-    fun dragNode(node: ImDrawableNode, dragAmount: DpOffset) {
-        (node as? DrawableNode)?.let {
+    fun dragNode(node: DrawableNode, dragAmount: DpOffset) {
+        (node as? MutableDrawableNode)?.let {
             node.x += dragAmount.x
             node.y += dragAmount.y
         }

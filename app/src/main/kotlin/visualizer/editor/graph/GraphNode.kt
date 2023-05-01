@@ -28,9 +28,9 @@ import kotlin.math.roundToInt
 @Composable
 fun GraphNode(
     modifier: Modifier = Modifier,
-    node: ImDrawableNode,
+    node: DrawableNode,
     nodeSize: Dp,
-    onNodeDrag: (ImDrawableNode, DpOffset) -> Unit,
+    onNodeDrag: (DrawableNode, DpOffset) -> Unit,
     sDragProvider: () -> Offset,
     sScaleProvider: () -> ScreenScale
 ) {

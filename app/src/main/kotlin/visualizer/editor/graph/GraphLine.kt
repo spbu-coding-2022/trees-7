@@ -12,8 +12,8 @@ import androidx.compose.ui.unit.Dp
 @Composable
 fun GraphLine(
     modifier: Modifier = Modifier,
-    start: ImDrawableNode,
-    end: ImDrawableNode,
+    start: DrawableNode,
+    end: DrawableNode,
     nodeSize: Dp,
     sDragProvider: () -> Offset,
     sScaleProvider: () -> ScreenScale
