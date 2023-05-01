@@ -37,7 +37,7 @@ class CreatorViewModel(
         state = CreatorState.Ok
     }
 
-    suspend fun createTree(treeInfo: TreeInfo) {
+    fun createTree(treeInfo: TreeInfo) {
         state = CreatorState.Loading
         when (treeInfo.type) {
             Simple -> {

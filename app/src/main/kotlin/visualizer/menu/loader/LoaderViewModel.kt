@@ -34,7 +34,7 @@ class LoaderViewModel(
     private var treeInfos = mutableListOf<TreeInfo>()
 
     /** Loads all trees from db */
-    suspend fun loadTrees() {
+    fun loadTrees() {
         treeInfos.clear()
         listOf(
             Pair(simpleRepo, Simple),
@@ -49,7 +49,7 @@ class LoaderViewModel(
     }
 
     /** Must be called when user decides to edit a tree */
-    suspend fun editTree(tree: TreeInfo) {
+    fun editTree(tree: TreeInfo) {
         state = LoaderState.Loading
         when (tree.type) {
             Simple -> onEditTree(tree, simpleRepo[tree.name] ?: throw IllegalStateException())
