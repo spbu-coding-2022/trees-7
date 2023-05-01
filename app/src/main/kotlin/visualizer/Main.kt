@@ -56,16 +56,10 @@ fun main() {
             title = "BST Visualizer",
             state = rememberWindowState(
                 position = WindowPosition(alignment = Alignment.Center),
-                size = DpSize(1100.dp, 700.dp) // window size on start
             ),
         ) {
             // set min window size
-            LocalDensity.current.run {
-                window.minimumSize = Dimension(
-                    550.dp.roundToPx(),
-                    350.dp.roundToPx()
-                )
-            }
+            window.minimumSize = Dimension(1200, 800)
 
             // set background color and padding for application
             Box(
