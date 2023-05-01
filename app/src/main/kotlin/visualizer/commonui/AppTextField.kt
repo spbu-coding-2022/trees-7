@@ -14,6 +14,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 
 
+/** Custom text field based on material 3 OutlinedTextField */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTextField(

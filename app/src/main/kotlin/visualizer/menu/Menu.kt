@@ -10,6 +10,7 @@ import visualizer.menu.loader.LoaderScreen
 import visualizer.menu.loader.LoaderViewModel
 import visualizer.menu.settings.SettingsScreen
 
+
 private sealed class Screen {
     object Loader : Screen()
     object Creator : Screen()
@@ -18,7 +19,7 @@ private sealed class Screen {
 
 @Composable
 fun Menu(
-    onEditTree: (TreeInfo, BinarySearchTree<NodeData, *>) -> Unit
+    onEditTree: (TreeInfo, BinarySearchTree<NodeData, *>) -> Unit // called when user wants to edit BST
 ) {
     var screenState by remember { mutableStateOf<Screen>(Screen.Loader) }
     when (screenState) {

@@ -25,10 +25,12 @@ sealed class CreatorState {
 class CreatorViewModel(
     private val onEditTree: (TreeInfo, BinarySearchTree<NodeData, *>) -> Unit
 ) : KoinComponent {
+    // inject repos to save new trees in db
     private val simpleRepo: TreeRepository<SimpleBST<NodeData>> by inject(named("simpleRepo"))
     private val avlRepo: TreeRepository<AVLTree<NodeData>> by inject(named("avlRepo"))
     private val rbRepo: TreeRepository<RBTree<NodeData>> by inject(named("rbRepo"))
 
+    // should be observed by UI
     var state: CreatorState by mutableStateOf(CreatorState.Ok)
         private set
 
@@ -37,12 +39,14 @@ class CreatorViewModel(
         state = CreatorState.Ok
     }
 
+    /** Creates new tree and stores it in db. Then calls [onEditTree] to edit the tree */
     fun createTree(treeInfo: TreeInfo) {
         state = CreatorState.Loading
+
         when (treeInfo.type) {
             Simple -> {
                 if (treeInfo.name in simpleRepo.names) state =
-                    CreatorState.Error("Tree with that name and type already exists")
+                    CreatorState.Error("${treeInfo.type.displayName} tree with that name already exists")
                 else
                     SimpleBST<NodeData>().let {
                         simpleRepo[treeInfo.name] = it
@@ -52,7 +56,7 @@ class CreatorViewModel(
 
             AVL -> {
                 if (treeInfo.name in avlRepo.names) state =
-                    CreatorState.Error("Tree with that name and type already exists")
+                    CreatorState.Error("${treeInfo.type.displayName} tree with that name already exists")
                 else
                     AVLTree<NodeData>().let {
                         avlRepo[treeInfo.name] = it
@@ -62,7 +66,7 @@ class CreatorViewModel(
 
             RB -> {
                 if (treeInfo.name in rbRepo.names) state =
-                    CreatorState.Error("Tree with that name and type already exists")
+                    CreatorState.Error("${treeInfo.type.displayName} tree with that name already exists")
                 else
                     RBTree<NodeData>().let {
                         rbRepo[treeInfo.name] = it

@@ -16,12 +16,16 @@ import visualizer.commonui.defaultErrorColor
 import visualizer.commonui.defaultTextStyle
 
 
+/** Displays loading screen */
 @Composable
-fun LoadingView() {
-    Box(Modifier.fillMaxSize()) {
+fun LoadingView(
+    modifier: Modifier = Modifier,
+    loadingText: String = "Loading.."
+) {
+    Box(modifier.fillMaxSize()) {
         Text(
             modifier = Modifier.align(Alignment.Center),
-            text = "Loading..",
+            text = loadingText,
             textAlign = TextAlign.Center,
             color = Color.Gray,
             style = defaultTextStyle
@@ -30,13 +34,15 @@ fun LoadingView() {
 }
 
 
+/** Displays error screen */
 @Composable
 fun ErrorView(
+    modifier: Modifier = Modifier,
     errorMsg: String,
     buttonText: String,
     onClick: () -> Unit
 ) {
-    Box(Modifier.fillMaxSize()) {
+    Box(modifier.fillMaxSize()) {
         Column(
             modifier = Modifier.align(Alignment.Center),
             verticalArrangement = Arrangement.spacedBy(20.dp),

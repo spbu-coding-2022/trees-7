@@ -19,6 +19,7 @@ import visualizer.commonui.defaultHeight
 import visualizer.commonui.defaultTextStyle
 
 
+/** Allows user to create new trees */
 @Composable
 fun CreatorScreen(
     viewModel: CreatorViewModel,

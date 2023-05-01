@@ -24,10 +24,12 @@ sealed class LoaderState {
 class LoaderViewModel(
     private val onEditTree: (TreeInfo, BinarySearchTree<NodeData, *>) -> Unit
 ) : KoinComponent {
+    // inject repositories to load trees from db
     private val simpleRepo: TreeRepository<SimpleBST<NodeData>> by inject(named("simpleRepo"))
     private val avlRepo: TreeRepository<AVLTree<NodeData>> by inject(named("avlRepo"))
     private val rbRepo: TreeRepository<RBTree<NodeData>> by inject(named("rbRepo"))
 
+    // should be observed by UI
     var state: LoaderState by mutableStateOf(LoaderState.Loading)
         private set
 
@@ -35,6 +37,8 @@ class LoaderViewModel(
 
     /** Loads all trees from db */
     fun loadTrees() {
+        state = LoaderState.Loading
+
         treeInfos.clear()
         listOf(
             Pair(simpleRepo, Simple),
@@ -48,7 +52,7 @@ class LoaderViewModel(
         state = LoaderState.Loaded(treeInfos)
     }
 
-    /** Must be called when user decides to edit a tree */
+    /** Called when user decides to edit a tree */
     fun editTree(tree: TreeInfo) {
         state = LoaderState.Loading
         when (tree.type) {

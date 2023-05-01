@@ -53,16 +53,21 @@ fun main() {
     application {
         Window(
             onCloseRequest = ::exitApplication,
-            title = "graph",
+            title = "BST Visualizer",
             state = rememberWindowState(
                 position = WindowPosition(alignment = Alignment.Center),
-                size = DpSize(1100.dp, 700.dp)
+                size = DpSize(1100.dp, 700.dp) // window size on start
             ),
         ) {
+            // set min window size
             LocalDensity.current.run {
-                window.minimumSize = Dimension(550.dp.roundToPx(), 350.dp.roundToPx())
+                window.minimumSize = Dimension(
+                    550.dp.roundToPx(),
+                    350.dp.roundToPx()
+                )
             }
 
+            // set background color and padding for application
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -74,6 +79,7 @@ fun main() {
                         surface = Color.White,
                     )
                 ) {
+                    // navigation
                     var screenState by remember { mutableStateOf<Screen>(Screen.Menu) }
                     when (val screen = screenState) {
                         Screen.Menu -> Menu(

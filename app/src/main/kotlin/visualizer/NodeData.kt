@@ -3,6 +3,7 @@ package visualizer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+/** Allows to store key, value & x, y coordinates in BSTs nodes */
 class NodeData(
     val key: Int,
     val value: String,
@@ -29,4 +30,3 @@ class NodeData(
             }
     }
 }
-

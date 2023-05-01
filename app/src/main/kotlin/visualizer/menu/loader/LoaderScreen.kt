@@ -16,6 +16,7 @@ import visualizer.commonui.defaultTextStyle
 import visualizer.LoadingView
 
 
+/** Displays trees loaded from database. Lets user select a tree to edit */
 @Composable
 fun LoaderScreen(
     viewModel: LoaderViewModel,
