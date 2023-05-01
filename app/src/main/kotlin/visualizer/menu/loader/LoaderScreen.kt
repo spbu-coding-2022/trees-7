@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import visualizer.commonui.defaultHeight
 import visualizer.commonui.defaultTextStyle
-import visualizer.menu.LoadingView
+import visualizer.LoadingView
 
 
 @Composable
@@ -22,7 +22,7 @@ fun LoaderScreen(
     onNewTree: () -> Unit,
     onSettings: () -> Unit
 ) {
-    LaunchedEffect(Unit) {// on first composition load all trees from db
+    LaunchedEffect(Unit) { // on first composition load all trees from db
         withContext(Dispatchers.Default) {
             viewModel.loadTrees()
         }

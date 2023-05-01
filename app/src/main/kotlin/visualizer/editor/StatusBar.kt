@@ -17,6 +17,8 @@ import visualizer.commonui.defaultHPadding
 import visualizer.commonui.defaultTextStyle
 
 
+data class EditorStatus(val msg: String, val type: StatusType)
+
 enum class StatusType {
     Ok,
     Fail
@@ -25,8 +27,7 @@ enum class StatusType {
 @Composable
 fun StatusBar(
     modifier: Modifier = Modifier,
-    statusText: String,
-    statusType: StatusType
+    status: EditorStatus
 ) {
     Box(
         contentAlignment = Alignment.CenterStart,
@@ -39,11 +40,11 @@ fun StatusBar(
             .padding(horizontal = defaultHPadding, vertical = 20.dp)
     ) {
         Text(
-            text = statusText,
+            text = status.msg,
             maxLines = 3,
             overflow = TextOverflow.Ellipsis,
             style = defaultTextStyle,
-            color = when (statusType) {
+            color = when (status.type) {
                 StatusType.Ok -> Color.Black
                 StatusType.Fail -> defaultErrorColor
             }

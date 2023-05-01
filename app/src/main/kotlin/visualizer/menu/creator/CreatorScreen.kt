@@ -9,14 +9,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import visualizer.ErrorView
+import visualizer.LoadingView
 import visualizer.TreeInfo
 import visualizer.TreeType
 import visualizer.commonui.AppButton
 import visualizer.commonui.AppTextField
 import visualizer.commonui.defaultHeight
 import visualizer.commonui.defaultTextStyle
-import visualizer.menu.ErrorView
-import visualizer.menu.LoadingView
 
 
 @Composable

@@ -6,8 +6,8 @@ import androidx.compose.ui.unit.dp
 class NodeData(
     val key: Int,
     val value: String,
-    val x: Dp? = null,
-    val y: Dp? = null
+    var x: Dp = 0.dp,
+    var y: Dp = 0.dp
 ) : Comparable<NodeData> {
     override fun compareTo(other: NodeData) = key.compareTo(other.key)
 
@@ -16,15 +16,15 @@ class NodeData(
 
     companion object {
         fun serialize(data: NodeData): String =
-            "${data.x?.value};${data.y?.value};${data.key};${data.value}"
+            "${data.x.value};${data.y.value};${data.key};${data.value}"
 
         fun deserialize(data: String): NodeData =
             data.split(";", limit = 4).let {
                 NodeData(
                     key = it[2].toInt(),
                     value = it[3],
-                    x = it[0].toFloatOrNull()?.dp,
-                    y = it[1].toFloatOrNull()?.dp
+                    x = it[0].toFloat().dp,
+                    y = it[1].toFloat().dp
                 )
             }
     }

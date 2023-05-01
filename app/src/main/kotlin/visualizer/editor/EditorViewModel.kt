@@ -4,36 +4,179 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.DpOffset
+import bstrees.AVLTree
 import bstrees.BinarySearchTree
+import bstrees.RBTree
+import bstrees.SimpleBST
 import bstrees.nodes.RBNode
 import bstrees.nodes.TreeNode
+import bstrees.repos.TreeRepository
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import org.koin.core.qualifier.named
 import visualizer.NodeData
 import visualizer.editor.graph.DrawableNode
 import visualizer.editor.graph.ImDrawableNode
-import kotlin.random.Random
 
+
+sealed class EditorState {
+    object Loading : EditorState()
+    data class Loaded(val treeRoot: ImDrawableNode?, val status: EditorStatus) : EditorState()
+}
 
 class EditorViewModel<N : TreeNode<NodeData, N>>(
-    private val tree: BinarySearchTree<NodeData, N>,
+    private val bst: BinarySearchTree<NodeData, N>,
 ) : KoinComponent {
-    // view model holds the state and provides UI with immutable version of it
-    var drawableRoot: ImDrawableNode? by mutableStateOf(toDrawable(tree.root))
+    private val simpleRepo: TreeRepository<SimpleBST<NodeData>> by inject(named("simpleRepo"))
+    private val avlRepo: TreeRepository<AVLTree<NodeData>> by inject(named("avlRepo"))
+    private val rbRepo: TreeRepository<RBTree<NodeData>> by inject(named("rbRepo"))
+
+    var state: EditorState by mutableStateOf(EditorState.Loading)
         private set
 
-    private val rand = Random(31)
+    private var drawableRoot: ImDrawableNode? = null
 
-    fun changeTree() {
-        tree.insert(NodeData(rand.nextInt(100), "a"))
-        tree.insert(NodeData(rand.nextInt(100), "b"))
-        tree.insert(NodeData(rand.nextInt(100), "c"))
-        tree.insert(NodeData(rand.nextInt(100), "d"))
-        tree.insert(NodeData(rand.nextInt(100), "e"))
+    /** Converts real tree to drawable one */
+    fun initTree() {
+        state = EditorState.Loading
+        drawableRoot = toDrawable(bst.root, respectXY = true)
 
-        drawableRoot = toDrawable(tree.root)
+        state = EditorState.Loaded(
+            treeRoot = drawableRoot,
+            status = EditorStatus("Successfully loaded the tree", StatusType.Ok)
+        )
     }
 
-    private fun toDrawable(root: N?): ImDrawableNode? {
+    /** Resets tree coordinates. That is resetting any movement user has done to nodes */
+    fun resetTree() {
+        state = EditorState.Loading
+        drawableRoot = toDrawable(bst.root)
+
+        state = EditorState.Loaded(
+            treeRoot = drawableRoot,
+            status = EditorStatus("Successfully reset the tree", StatusType.Ok)
+        )
+    }
+
+    /** Tries to save tree in db by specified [name] */
+    fun saveTree(name: String) {
+        state = EditorState.Loading
+
+        fun copyCoordinates(node: N?, drawableNode: ImDrawableNode?) {
+            if (node == null || drawableNode == null) {
+                return
+            }
+            copyCoordinates(node.left, drawableNode.left)
+            node.data.x = drawableNode.x
+            node.data.y = drawableNode.y
+            copyCoordinates(node.right, drawableNode.right)
+        }
+
+        copyCoordinates(bst.root, drawableRoot)
+
+        when (bst) {
+            is SimpleBST<NodeData> -> {
+                simpleRepo[name] = bst
+            }
+
+            is AVLTree<NodeData> -> {
+                avlRepo[name] = bst
+            }
+
+            is RBTree<NodeData> -> {
+                rbRepo[name] = bst
+            }
+        }
+
+        state = EditorState.Loaded(
+            treeRoot = drawableRoot,
+            status = EditorStatus(
+                msg = "Tree '$name' was successfully saved",
+                type = StatusType.Ok
+            )
+        )
+    }
+
+    /** Inserts node in the tree */
+    fun insert(key: Int, value: String) {
+        state = EditorState.Loading
+
+        if (bst.search(NodeData(key, ""))?.value == value) {
+            state = EditorState.Loaded(
+                treeRoot = drawableRoot,
+                status = EditorStatus(
+                    msg = "$key with value '$value' already exists in the tree",
+                    type = StatusType.Fail
+                )
+            )
+            return
+        }
+
+        bst.insert(NodeData(key, value))
+        drawableRoot = toDrawable(bst.root)
+
+        state = EditorState.Loaded(
+            treeRoot = drawableRoot,
+            status = EditorStatus(
+                msg = "Inserted $key with value '$value' in the tree",
+                type = StatusType.Ok
+            )
+        )
+    }
+
+    /** Deletes node from the tree */
+    fun delete(key: Int) {
+        state = EditorState.Loading
+
+        val res = bst.delete(NodeData(key, ""))
+        val status =
+            res?.let {
+                drawableRoot = toDrawable(bst.root)
+                EditorStatus(
+                    "Deleted $key with value '${it.value}'",
+                    StatusType.Ok
+                )
+            } ?: EditorStatus(
+                "$key doesn't exist in the tree",
+                StatusType.Fail
+            )
+
+        state = EditorState.Loaded(
+            treeRoot = drawableRoot,
+            status = status
+        )
+    }
+
+
+    /** Tries to find node with specified [key] */
+    fun search(key: Int) {
+        state = EditorState.Loading
+
+        val res = bst.search(NodeData(key, ""))
+        val status =
+            res?.let {
+                EditorStatus(
+                    "Found $key with value '${it.value}'",
+                    StatusType.Ok
+                )
+            } ?: EditorStatus(
+                "$key doesn't exist in the tree",
+                StatusType.Fail
+            )
+
+        state = EditorState.Loaded(
+            treeRoot = drawableRoot,
+            status = status
+        )
+    }
+
+
+    /**
+     * Convert real tree node to drawable one.
+     * If [respectXY] is set to true, function will respect coordinates stored in node's data.
+     * Otherwise, they will be computed so tree is displayed properly
+     */
+    private fun toDrawable(root: N?, respectXY: Boolean = false): ImDrawableNode? {
         if (root == null) {
             return null
         }
@@ -42,28 +185,28 @@ class EditorViewModel<N : TreeNode<NodeData, N>>(
 
         fun calcCoordinates(
             node: N,
-            drawNode: DrawableNode,
+            drawableNode: DrawableNode,
             offsetX: Int,
             curH: Int,
         ): Int {
             var resX = offsetX
             node.left?.let { left ->
-                drawNode.left = DrawableNode(left.data.key, left.data.value).also { drawLeft ->
+                drawableNode.left = DrawableNode(left.data.key, left.data.value).also { drawLeft ->
                     resX = calcCoordinates(left, drawLeft, offsetX, curH + 1) + 1
                 }
             }
 
-            drawNode.x = node.data.x ?: ((defaultNodeSize * 2 / 3) * resX)
-            drawNode.y = node.data.y ?: ((defaultNodeSize * 5 / 4) * curH)
+            drawableNode.x = if (respectXY) node.data.x else ((defaultNodeSize * 2 / 3) * resX)
+            drawableNode.y = if (respectXY) node.data.y else ((defaultNodeSize * 5 / 4) * curH)
             if (node is RBNode<*>) {
-                drawNode.color = when (node.color) {
+                drawableNode.color = when (node.color) {
                     RBNode.Color.Red -> redNodeColor
                     RBNode.Color.Black -> blackNodeColor
                 }
             }
 
             node.right?.let { right ->
-                drawNode.right = DrawableNode(right.data.key, right.data.value).also { drawRight ->
+                drawableNode.right = DrawableNode(right.data.key, right.data.value).also { drawRight ->
                     resX = calcCoordinates(right, drawRight, resX + 1, curH + 1)
                 }
             }

@@ -57,7 +57,7 @@ private fun InsertBar(
         AppTextField(
             modifier = Modifier.fillMaxHeight().weight(1.5f),
             value = valueText,
-            onValueChange = { valueText = it },
+            onValueChange = { if (it.length <= 25) valueText = it },
             placeholderText = "Value to insert"
         )
 
@@ -144,6 +144,7 @@ private fun SearchBar(
             modifier = Modifier.fillMaxHeight().aspectRatio(1f),
             onClick = {
                 onSearch(keyText.toInt())
+                keyText = ""
             },
             enabled = keyText.toIntOrNull() != null,
             contentPadding = PaddingValues(0.dp)

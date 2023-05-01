@@ -83,9 +83,7 @@ fun main() {
                         )
 
                         is Screen.Editor -> EditorScreen(
-                            viewModel = EditorViewModel(
-                                tree = screen.tree
-                            ),
+                            viewModel = EditorViewModel(bst = screen.tree),
                             treeInfo = screen.treeInfo,
                             onGoHome = { screenState = Screen.Menu }
                         )

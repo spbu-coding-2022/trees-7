@@ -1,4 +1,4 @@
-package visualizer.menu
+package visualizer
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

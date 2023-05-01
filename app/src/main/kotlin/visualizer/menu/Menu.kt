@@ -23,17 +23,13 @@ fun Menu(
     var screenState by remember { mutableStateOf<Screen>(Screen.Loader) }
     when (screenState) {
         Screen.Loader -> LoaderScreen(
-            viewModel = LoaderViewModel(
-                onEditTree = onEditTree
-            ),
+            viewModel = LoaderViewModel(onEditTree = onEditTree),
             onNewTree = { screenState = Screen.Creator },
             onSettings = { screenState = Screen.Settings }
         )
 
         Screen.Creator -> CreatorScreen(
-            viewModel = CreatorViewModel(
-                onEditTree = onEditTree
-            ),
+            viewModel = CreatorViewModel(onEditTree = onEditTree),
             onGoBack = { screenState = Screen.Loader }
         )
 

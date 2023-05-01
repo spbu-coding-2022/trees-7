@@ -20,7 +20,7 @@ class GraphState {
         private set
 
     fun handleScroll(scrollDelta: Offset, scrollPosition: Offset) {
-        screenDrag += Offset(-scrollDelta.x * 25, 0f) // *25 'cause let's scroll faster brbrbrb
+        screenDrag += Offset(-scrollDelta.x / screenScale.scale * 25, 0f) // *25 'cause let's scroll faster brbrbrb
 
         val prevScale = screenScale.scale
         val newScale = min(
