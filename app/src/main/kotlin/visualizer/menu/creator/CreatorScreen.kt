@@ -7,6 +7,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import visualizer.TreeInfo
 import visualizer.TreeType
@@ -23,7 +24,7 @@ fun CreatorScreen(
     viewModel: CreatorViewModel,
     onGoBack: () -> Unit
 ) {
-    val cScope = rememberCoroutineScope()
+    val cScope = rememberCoroutineScope { Dispatchers.Default }
     when (val state = viewModel.state) {
         CreatorState.Loading -> LoadingView()
 

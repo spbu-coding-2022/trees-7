@@ -8,7 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import visualizer.commonui.defaultHeight
 import visualizer.commonui.defaultTextStyle
 import visualizer.menu.LoadingView
@@ -21,10 +23,12 @@ fun LoaderScreen(
     onSettings: () -> Unit
 ) {
     LaunchedEffect(Unit) {// on first composition load all trees from db
-        viewModel.loadTrees()
+        withContext(Dispatchers.Default) {
+            viewModel.loadTrees()
+        }
     }
 
-    val cScope = rememberCoroutineScope()
+    val cScope = rememberCoroutineScope { Dispatchers.Default }
     when (val state = viewModel.state) {
         LoaderState.Loading -> LoadingView()
 
