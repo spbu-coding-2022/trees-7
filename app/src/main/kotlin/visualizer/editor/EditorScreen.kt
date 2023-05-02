@@ -30,9 +30,9 @@ fun <N : TreeNode<NodeData, N>> EditorScreen(
         }
     }
 
-    var isLoading by remember { mutableStateOf(false) }
+    var isLoading = remember { false }
     var treeRoot: DrawableNode? by remember { mutableStateOf(null) }
-    var status by remember { mutableStateOf(EditorStatus("", StatusType.Ok)) }
+    var status = remember { EditorStatus("", StatusType.Ok) }
 
     when (val state = viewModel.state) {
         EditorState.Loading -> {
