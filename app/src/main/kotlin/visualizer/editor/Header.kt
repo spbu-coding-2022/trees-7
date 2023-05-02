@@ -27,7 +27,8 @@ fun Header(
     treeInfo: TreeInfo,
     onSave: () -> Unit,
     onResetTree: () -> Unit,
-    onGoHome: () -> Unit
+    onGoHome: () -> Unit,
+    enabled: Boolean,
 ) {
     Column(
         modifier = modifier,
@@ -35,6 +36,7 @@ fun Header(
     ) {
         TreeInfoBar(tree = treeInfo)
         EditorControls(
+            enabled = enabled,
             onSave = onSave,
             onResetTree = onResetTree,
             onGoHome = onGoHome
@@ -79,7 +81,8 @@ private fun EditorControls(
     modifier: Modifier = Modifier,
     onSave: () -> Unit,
     onResetTree: () -> Unit,
-    onGoHome: () -> Unit
+    onGoHome: () -> Unit,
+    enabled: Boolean
 ) {
     Row(
         modifier = modifier.height(defaultHeight),
@@ -87,7 +90,8 @@ private fun EditorControls(
     ) {
         AppButton(
             modifier = Modifier.fillMaxHeight().weight(1f),
-            onClick = onSave
+            onClick = onSave,
+            enabled = enabled,
         ) {
             Text(
                 text = "Save",
@@ -98,7 +102,8 @@ private fun EditorControls(
 
         AppButton(
             modifier = Modifier.fillMaxHeight().weight(2f),
-            onClick = onResetTree
+            onClick = onResetTree,
+            enabled = enabled,
         ) {
             Text(
                 text = "Reset tree",
@@ -109,7 +114,8 @@ private fun EditorControls(
         AppButton(
             modifier = Modifier.fillMaxHeight().aspectRatio(1f),
             onClick = onGoHome,
-            contentPadding = PaddingValues(0.dp)
+            contentPadding = PaddingValues(0.dp),
+            enabled = enabled
         ) {
             Icon(
                 imageVector = Icons.Outlined.Home,

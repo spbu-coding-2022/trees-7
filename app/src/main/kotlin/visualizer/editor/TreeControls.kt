@@ -20,22 +20,24 @@ fun TreeControls(
     modifier: Modifier = Modifier,
     onInsert: (Int, String) -> Unit,
     onDelete: (Int) -> Unit,
-    onSearch: (Int) -> Unit
+    onSearch: (Int) -> Unit,
+    enabled: Boolean
 ) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        InsertBar(onInsert = onInsert)
-        DeleteBar(onDelete = onDelete)
-        SearchBar(onSearch = onSearch)
+        InsertBar(onInsert = onInsert, enabled = enabled)
+        DeleteBar(onDelete = onDelete, enabled = enabled)
+        SearchBar(onSearch = onSearch, enabled = enabled)
     }
 }
 
 @Composable
 private fun InsertBar(
     modifier: Modifier = Modifier,
-    onInsert: (Int, String) -> Unit
+    onInsert: (Int, String) -> Unit,
+    enabled: Boolean,
 ) {
     Row(
         modifier = modifier.height(defaultHeight),
@@ -50,7 +52,8 @@ private fun InsertBar(
                     keyText = it
                 }
             },
-            placeholderText = "Key"
+            placeholderText = "Key",
+            readOnly = !enabled
         )
 
         var valueText by remember { mutableStateOf("") }
@@ -58,7 +61,8 @@ private fun InsertBar(
             modifier = Modifier.fillMaxHeight().weight(1.5f),
             value = valueText,
             onValueChange = { if (it.length <= 25) valueText = it },
-            placeholderText = "Value to insert"
+            placeholderText = "Value to insert",
+            readOnly = !enabled
         )
 
         AppButton(
@@ -68,8 +72,8 @@ private fun InsertBar(
                 keyText = ""
                 valueText = ""
             },
-            enabled = keyText.toIntOrNull() != null && valueText.isNotEmpty(),
-            contentPadding = PaddingValues(0.dp)
+            enabled = keyText.toIntOrNull() != null && valueText.isNotEmpty() && enabled,
+            contentPadding = PaddingValues(0.dp),
         ) {
             Icon(
                 imageVector = Icons.Outlined.Add,
@@ -83,7 +87,8 @@ private fun InsertBar(
 @Composable
 private fun DeleteBar(
     modifier: Modifier = Modifier,
-    onDelete: (Int) -> Unit
+    onDelete: (Int) -> Unit,
+    enabled: Boolean
 ) {
     Row(
         modifier = modifier.height(defaultHeight),
@@ -98,7 +103,8 @@ private fun DeleteBar(
                     keyText = it
                 }
             },
-            placeholderText = "Key to delete"
+            placeholderText = "Key to delete",
+            readOnly = !enabled
         )
 
         AppButton(
@@ -107,7 +113,7 @@ private fun DeleteBar(
                 onDelete(keyText.toInt())
                 keyText = ""
             },
-            enabled = keyText.toIntOrNull() != null,
+            enabled = keyText.toIntOrNull() != null && enabled,
             contentPadding = PaddingValues(0.dp)
         ) {
             Icon(
@@ -122,7 +128,8 @@ private fun DeleteBar(
 @Composable
 private fun SearchBar(
     modifier: Modifier = Modifier,
-    onSearch: (Int) -> Unit
+    onSearch: (Int) -> Unit,
+    enabled: Boolean
 ) {
     Row(
         modifier = modifier.height(defaultHeight),
@@ -137,7 +144,8 @@ private fun SearchBar(
                     keyText = it
                 }
             },
-            placeholderText = "Key to search for"
+            placeholderText = "Key to search for",
+            readOnly = !enabled
         )
 
         AppButton(
@@ -146,7 +154,7 @@ private fun SearchBar(
                 onSearch(keyText.toInt())
                 keyText = ""
             },
-            enabled = keyText.toIntOrNull() != null,
+            enabled = keyText.toIntOrNull() != null && enabled,
             contentPadding = PaddingValues(0.dp)
         ) {
             Icon(
