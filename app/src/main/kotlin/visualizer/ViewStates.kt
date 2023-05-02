@@ -24,7 +24,7 @@ fun LoadingView(
 ) {
     Box(modifier.fillMaxSize()) {
         Text(
-            modifier = Modifier.align(Alignment.Center),
+            modifier = Modifier.align(Alignment.BottomStart),
             text = loadingText,
             textAlign = TextAlign.Center,
             color = Color.Gray,
