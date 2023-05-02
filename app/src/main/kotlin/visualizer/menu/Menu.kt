@@ -9,19 +9,20 @@ import visualizer.menu.creator.CreatorViewModel
 import visualizer.menu.loader.LoaderScreen
 import visualizer.menu.loader.LoaderViewModel
 import visualizer.menu.settings.SettingsScreen
+import visualizer.menu.settings.SettingsViewModel
 
 
-private sealed class Screen {
-    object Loader : Screen()
-    object Creator : Screen()
-    object Settings : Screen()
+private enum class Screen {
+    Loader,
+    Creator,
+    Settings
 }
 
 @Composable
 fun Menu(
     onEditTree: (TreeInfo, BinarySearchTree<NodeData, *>) -> Unit // called when user wants to edit BST
 ) {
-    var screenState by remember { mutableStateOf<Screen>(Screen.Loader) }
+    var screenState by remember { mutableStateOf(Screen.Loader) }
     when (screenState) {
         Screen.Loader -> LoaderScreen(
             viewModel = LoaderViewModel(onEditTree = onEditTree),
@@ -34,6 +35,9 @@ fun Menu(
             onGoBack = { screenState = Screen.Loader }
         )
 
-        Screen.Settings -> SettingsScreen()
+        Screen.Settings -> SettingsScreen(
+            viewModel = SettingsViewModel(),
+            onGoBack = { screenState = Screen.Loader }
+        )
     }
 }

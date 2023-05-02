@@ -35,8 +35,10 @@ data class AppConfig(
     val neo4jConfig: Neo4jConfig,
 )
 
-enum class DBType {
-    Json, Postgres, Neo4j
+enum class DBType(val displayName: String) {
+    Json("Local files"),
+    Postgres("Postgres"),
+    Neo4j("Neo4j")
 }
 
 @Serializable

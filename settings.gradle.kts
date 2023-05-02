@@ -34,6 +34,8 @@ dependencyResolutionManagement {
             library("exposed-dao", "org.jetbrains.exposed", "exposed-dao").versionRef("exposed")
             library("exposed-jdbc", "org.jetbrains.exposed", "exposed-jdbc").versionRef("exposed")
 
+            library("postgresql", "org.postgresql:postgresql:42.6.0")
+
             version("neo4j-ogm", "4.0.5")
             library("neo4j-ogm-core", "org.neo4j", "neo4j-ogm-core").versionRef("neo4j-ogm")
             library("neo4j-ogm-bolt", "org.neo4j", "neo4j-ogm-bolt-driver").versionRef("neo4j-ogm")
