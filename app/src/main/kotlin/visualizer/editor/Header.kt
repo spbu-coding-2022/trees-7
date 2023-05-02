@@ -69,7 +69,7 @@ private fun TreeInfoBar(modifier: Modifier = Modifier, tree: TreeInfo) {
                 TreeType.AVL -> "avl"
             },
             style = defaultTextStyle,
-            color = Color.LightGray
+            color = Color.Gray
         )
     }
 }
