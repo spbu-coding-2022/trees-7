@@ -47,7 +47,7 @@ private fun SearchBar(
         modifier = modifier,
         value = searchTextProvider(),
         onValueChange = onSearchTextChange,
-        placeholderText = "Enter tree name to search for"
+        placeholderText = "Search for tree by name"
     )
 }
 
