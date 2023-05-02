@@ -15,12 +15,13 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import visualizer.NodeData
-import visualizer.editor.graph.MutableDrawableNode
 import visualizer.editor.graph.DrawableNode
+import visualizer.editor.graph.MutableDrawableNode
 
 
 sealed class EditorState {
     object Loading : EditorState()
+    object Saving: EditorState()
     data class Loaded(val treeRoot: DrawableNode?, val status: EditorStatus) : EditorState()
 }
 
@@ -60,7 +61,7 @@ class EditorViewModel<N : TreeNode<NodeData, N>>(
 
     /** Tries to save tree in db by specified [name] */
     fun saveTree(name: String) {
-        state = EditorState.Loading
+        state = EditorState.Saving
 
         fun copyCoordinates(node: N?, drawableNode: DrawableNode?) {
             if (node == null || drawableNode == null) {
