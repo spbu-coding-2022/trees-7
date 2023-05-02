@@ -21,7 +21,20 @@ jobs:
         with:
           java-version: '17'
           distribution: zulu
+
       - name: Build & test with Gradle
         uses: gradle/gradle-build-action@v2
         with:
           arguments: build
+
+      - if: matrix.os == 'ubuntu-latest'
+        name: Run Test Coverage
+        run: ./gradlew jacocoTestReport
+
+      - if: matrix.os == 'ubuntu-latest'
+        name: Jacoco Test Coverage Report
+        uses: cicirello/jacoco-badge-generator@v2.8.0
+        with:
+          generate-branches-badge: true
+          jacoco-csv-file: lib/build/jacoco/report.csv
+
