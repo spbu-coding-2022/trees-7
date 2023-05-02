@@ -12,8 +12,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
@@ -41,11 +39,14 @@ private sealed class Screen {
 }
 
 fun main() {
+    // create config file if not exists
+    initConfig()
+
     // setup DI
     val koinModule = module {
-        factory<TreeRepository<*>>(named("simpleRepo")) { RepoFactory.getSimpleRepo() }
-        factory<TreeRepository<*>>(named("avlRepo")) { RepoFactory.getAVLRepo() }
-        factory<TreeRepository<*>>(named("rbRepo")) { RepoFactory.getRBRepo() }
+        factory<TreeRepository<*>>(named("simpleRepo")) { RepoFactory.getRepo(TreeType.Simple) }
+        factory<TreeRepository<*>>(named("avlRepo")) { RepoFactory.getRepo(TreeType.AVL) }
+        factory<TreeRepository<*>>(named("rbRepo")) { RepoFactory.getRepo(TreeType.RB) }
     }
     startKoin { modules(koinModule) }
 

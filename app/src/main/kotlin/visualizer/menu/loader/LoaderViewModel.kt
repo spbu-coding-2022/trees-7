@@ -18,6 +18,7 @@ import visualizer.TreeType.*
 
 sealed class LoaderState {
     object Loading : LoaderState()
+    object DBError : LoaderState()
     data class Loaded(val trees: List<TreeInfo>) : LoaderState()
 }
 
@@ -40,15 +41,24 @@ class LoaderViewModel(
         state = LoaderState.Loading
 
         treeInfos.clear()
-        listOf(
-            Pair(simpleRepo, Simple),
-            Pair(avlRepo, AVL),
-            Pair(rbRepo, RB)
-        ).forEach { (repo, type) ->
-            repo.names.forEach { treeName ->
-                treeInfos.add(TreeInfo(treeName, type))
+        try {
+            listOf(
+                Pair(simpleRepo, Simple),
+                Pair(avlRepo, AVL),
+                Pair(rbRepo, RB)
+            ).forEach { (repo, type) ->
+                repo.names.forEach { treeName ->
+                    treeInfos.add(TreeInfo(treeName, type))
+                }
             }
+        } catch (e: Exception) {
+            // catch all as we don't know specific exceptions for database connection errors
+            e.printStackTrace()
+            state = LoaderState.DBError
+
+            return
         }
+
         state = LoaderState.Loaded(treeInfos)
     }
 

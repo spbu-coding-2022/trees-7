@@ -41,6 +41,7 @@ fun CreatorScreen(
             ) {
                 var selectedTreeType: TreeType? by remember { mutableStateOf(null) }
                 TreeTypeSelector(
+                    modifier = Modifier.height(defaultHeight),
                     selectedTreeType = selectedTreeType,
                     onTreeTypeSelect = { selectedTreeType = it }
                 )
@@ -54,6 +55,7 @@ fun CreatorScreen(
                 )
 
                 ButtonArray(
+                    modifier = Modifier.height(defaultHeight),
                     createButtonEnabled = selectedTreeType != null && treeName.isNotEmpty(),
                     onCreate = {
                         cScope.launch {
@@ -83,7 +85,7 @@ private fun ButtonArray(
     onGoBack: () -> Unit
 ) {
     Row(
-        modifier = modifier.height(defaultHeight),
+        modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         AppButton(
@@ -118,7 +120,7 @@ private fun TreeTypeSelector(
     onTreeTypeSelect: (TreeType) -> Unit
 ) {
     Row(
-        modifier = modifier.height(defaultHeight),
+        modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         TreeType.values().forEach {
