@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import visualizer.ErrorView
 import visualizer.LoadingView
 import visualizer.commonui.defaultHeight
 import visualizer.commonui.defaultTextStyle
@@ -32,6 +33,12 @@ fun LoaderScreen(
     val cScope = rememberCoroutineScope { Dispatchers.Default }
     when (val state = viewModel.state) {
         LoaderState.Loading -> LoadingView()
+
+        LoaderState.DBError -> ErrorView(
+            errorMsg = "Failed to connect to the database. Please check settings",
+            buttonText = "Go to Settings",
+            onClick = onSettings
+        )
 
         is LoaderState.Loaded ->
             Column {
