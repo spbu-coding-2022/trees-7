@@ -120,5 +120,3 @@ val rbRepo = Neo4jRepository(RBStrategy(Double::toString, String::toDouble), con
 val avlRepo2 = Neo4jRepository(AVLStrategy<String>({ it }, { it }), conf)
 // !!! storing AVLTree<Int> and AVLTree<String> in the same db is unsupported
 ```
-## License
-Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
